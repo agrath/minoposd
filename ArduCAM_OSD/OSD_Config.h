@@ -1,10 +1,85 @@
+//
+// hex files under C:\Users\...\AppData\Local\Temp\build....tmp
+//
 
 #define on 1
 #define off 0
 
 // Version number, incrementing this will erase/upload factory settings.
 // Only devs should increment this
-#define VER 76
+#define VER 75
+
+// JRChange: use with minRXOSD:
+//#define USE_WITH_MINRXOSD
+
+// JRChange: OpenPilot UAVTalk:
+#define PROTOCOL_UAVTALK
+
+// JRChange: Flight Batt on MinimOSD:
+//#define FLIGHT_BATT_ON_MINIMOSD
+
+// JRChange: Flight Batt on Revo:
+#define FLIGHT_BATT_ON_REVO
+
+// Voltage per battery cell when full
+#define BATT_VCELL_FULL 4.2
+
+// JRChange: PacketRxOk on MinimOSD:
+//#define PACKETRXOK_ON_MINIMOSD
+
+// Amedee: Analog RSSI on MinimOSD:
+//#define ANALOG_RSSI_ON_MINIMOSD
+
+// RSSI from Revo
+#define RSSI_ON_REVO
+
+// JRChange: artificial horizon original version
+//#define AH_ORIGINAL_VERSION
+
+// JRChange: artificial horizon refactored version
+//#define AH_REFACTORED_VERSION
+
+// JRChange: artificial horizon zero centered
+//#define AH_ZERO_CENTERED
+
+// JRChange: artificial horizon with better resolution
+#define AH_BETTER_RESOLUTION
+
+// JRChange: show_radar
+#define SHOW_RADAR
+
+// JRChange: JR specials
+//#define JR_SPECIALS
+
+// JRChange: OP debug
+//#define OP_DEBUG
+
+// JRChange: GPS simulation
+//#define GPS_SIMULATION
+
+// Version
+//#define VERSION_RELEASE_12_10_1		// OpenPilot-RELEASE 12.10.1	Release from 2012.10.26
+//#define VERSION_RELEASE_12_10_2		// OpenPilot-RELEASE 12.10.2	'Mayan Apocalypse'
+//#define VERSION_RELEASE_13_06_1		// OpenPilot-RELEASE 13.06.1	'Italian Stallion' .1
+//#define VERSION_RELEASE_13_06_2		// OpenPilot-RELEASE 13.06.2	'Italian Stallion' .2
+//#define VERSION_RELEASE_14_01_1		// OpenPilot-RELEASE 14.01.1	'Cruising Ratt' .1
+//#define VERSION_RELEASE_14_06_1		// OpenPilot-RELEASE 14.06.1	'Peanuts Schnapps' .1
+//#define VERSION_RELEASE_14_10_1		// OpenPilot-RELEASE 14.10.1	'Mini Me' .1
+//#define VERSION_RELEASE_15_01_1		// OpenPilot-RELEASE 15.01.1	'Look, Ma... No Hands!' .1
+//#define VERSION_RELEASE_15_02_1		// OpenPilot-RELEASE 15.02.1	'Ragin' Cajun' .1
+#define VERSION_RELEASE_15_05		// OpenPilot-RELEASE 15.02.1	'Banana Split' .1
+
+// Version string
+#define VERSION_STRING		osd.printf_P(PSTR("minoposd 15.05"));
+
+// OpenPilot additional UAVObjIds for unreleased and released versions
+#define VERSION_ADDITIONAL_UAVOBJID
+
+// OpenPilot Revo add ons
+#define REVO_ADD_ONS
+
+#define MEASURE_PERIOD		95	// ms
+
 
 // EEPROM Stepping, be careful not to overstep. 
 // We reserved floats for just to be sure if some values needs to be
@@ -53,6 +128,12 @@
 #define CALLSIGN_BIT   5
 #define RSSI_BIT       6
 #define Eff_BIT        7
+
+// panE_REG Byte has:
+
+#define Ch_BIT         0
+#define TEMP_BIT       1
+#define DIST_BIT       2
 
 /* *********************************************** */
 // EEPROM Storage addresses
@@ -160,19 +241,30 @@
 #define panTune_en_ADDR 188
 #define panTune_x_ADDR 190
 #define panTune_y_ADDR 192
-
 #define panEff_en_ADDR 194
 #define panEff_x_ADDR 196
 #define panEff_y_ADDR 198
 #define panCALLSIGN_en_ADDR 200
 #define panCALLSIGN_x_ADDR 202
 #define panCALLSIGN_y_ADDR 204
+#define panCh_en_ADDR 206
+#define panCh_x_ADDR 208
+#define panCh_y_ADDR 210
+#define panTemp_en_ADDR 212
+#define panTemp_x_ADDR 214
+#define panTemp_y_ADDR 216
+#define panFdata_en_ADDR 218
+#define panFdata_x_ADDR 220
+#define panFdata_y_ADDR 222
+#define panDistance_en_ADDR 224
+#define panDistance_x_ADDR 226
+#define panDistance_y_ADDR 228
 
 #define measure_ADDR 890
 #define overspeed_ADDR 892
 #define stall_ADDR 894
 #define battv_ADDR 896
-//#define battp_ADDR 898
+#define battp_ADDR 898
 #define OSD_RSSI_HIGH_ADDR 900
 #define OSD_RSSI_LOW_ADDR 902
 #define RADIO_ON_ADDR 904
@@ -185,11 +277,19 @@
 #define OSD_RSSI_WARN_ADDR 916
 
 #define OSD_BRIGHTNESS_ADDR 918
+
 #define OSD_CALL_SIGN_ADDR 920
 #define OSD_CALL_SIGN_TOTAL 8
 
+#define CHK1 1000
+#define CHK2 1006
 
-#define CHK_VERSION 1010
+// JRChange: Flight Batt on MinimOSD:
+#define BATT_VER			1
+#define BATT_CHK			1011
+#define volt_div_ratio_ADDR		1012
+#define curr_amp_per_volt_ADDR		1014
+#define curr_amp_offset_ADDR		1016
 
 
 #define EEPROM_MAX_ADDR 1024 // this is 328 chip

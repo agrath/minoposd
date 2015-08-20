@@ -3,20 +3,19 @@
 Copyright (c) 2011.  All rights reserved.
 An Open Source Arduino based OSD and Camera Control project.
 
-Program  : ArduCAM-OSD (MinimOSD [and variants] Firmware)
-Version  : V2.2, May 8th 2014
+Program  : ArduCAM-OSD (Supports the variant: minimOSD)
+Version  : V1.9, 14 February 2012
 Author(s): Sandro Benigno
 Coauthor(s):
 Jani Hirvinen   (All the EEPROM routines)
 Michael Oborne  (OSD Configutator)
-Zóltan Gábor, Pedro Santos and MinimOSD-Extra Team (Extra OSD Tools/Panels)
 Mike Smith      (BetterStream and Fast Serial libraries)
 Special Contribuitor:
 Andrew Tridgell by all the support on MAVLink
 Doug Weibel by his great orientation since the start of this project
 Contributors: James Goppert, Max Levine
 and all other members of DIY Drones Dev team
-Thanks to: Chris Anderson and Jordi Munoz
+Thanks to: Chris Anderson, Jordi Munoz
 
 
 This program is free software: you can redistribute it and/or modify
@@ -79,6 +78,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 #include "OSD_Vars.h"
 #include "OSD_Func.h"
 
+// JRChange: OpenPilot UAVTalk:
+#ifdef PROTOCOL_UAVTALK
+#include "UAVTalk.h"
+#endif
+// JRChange: Flight Batt on MinimOSD:
+#ifdef FLIGHT_BATT_ON_MINIMOSD
+#include "FlightBatt.h"
+#endif
+
+// Amedee: Analog RSSI on MinimOSD:
+#ifdef ANALOG_RSSI_ON_MINIMOSD
+#include "AnalogRssi.h"
+#endif
+
 /* *************************************************/
 /* ***************** DEFINITIONS *******************/
 
@@ -87,7 +100,12 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 #define MinimOSD
 
 #define TELEMETRY_SPEED  57600  // How fast our MAVLink telemetry is coming to Serial port
+
+#ifdef USE_WITH_MINRXOSD
+#define BOOTTIME         8000   // Time in milliseconds that we show boot loading bar and wait user input
+#else
 #define BOOTTIME         2000   // Time in milliseconds that we show boot loading bar and wait user input
+#endif
 
 // Objects and Serial definitions
 FastSerialPort0(Serial);
@@ -130,14 +148,28 @@ void setup()
     osd.closePanel();
 #endif
 
-    // Check EEPROM to for a new version that needs EEPROM reset
-    if(readEEPROM(CHK_VERSION) != VER) {
-        osd.setPanel(3,9);
+    // Just to easy up development things
+#ifdef FORCEINIT
+    InitializeOSD();
+#endif
+
+// JRChange:
+#if 0
+    // Check EEPROM to see if we have initialized it already or not
+    // also checks if we have new version that needs EEPROM reset
+    if(readEEPROM(CHK1) + readEEPROM(CHK2) != VER) {
+        osd.setPanel(6,9);
         osd.openPanel();
-        osd.printf_P(PSTR("EEPROM mapping outdated!|Update with the OSD Tool.")); 
+        osd.printf_P(PSTR("Missing/Old Config")); 
         osd.closePanel();
-        // run for ever until EEPROM version is OK 
-        for(;;) {}
+        InitializeOSD();
+    }
+#endif
+
+// JRChange: Flight Batt on MinimOSD:
+    // Check EEPROM to see if we have initialized the battery values already
+    if (readEEPROM(BATT_CHK) != BATT_VER) {
+	writeBattSettings();
     }
 
     // Get correct panel settings from EEPROM
@@ -147,8 +179,26 @@ void setup()
     // Show bootloader bar
     loadBar();
 
+// JRChange: Flight Batt on MinimOSD:
+#ifdef FLIGHT_BATT_ON_MINIMOSD
+    flight_batt_init();
+#endif
+
+// JRChange: PacketRxOk on MinimOSD:
+#ifdef PACKETRXOK_ON_MINIMOSD
+    PacketRxOk_init();
+#endif
+
+#ifdef ANALOG_RSSI_ON_MINIMOSD
+    analog_rssi_init();
+#endif
+
+#ifdef USE_WITH_MINRXOSD
+    delay(1000);
+#endif
+
     // Startup MAVLink timers  
-    mavlinkTimer.Set(&OnMavlinkTimer, 120);
+    mavlinkTimer.Set(&OnMavlinkTimer, 100);
 
     // House cleaning, clear display and enable timers
     osd.clear();
@@ -165,7 +215,14 @@ void setup()
 // As simple as possible.
 void loop() 
 {
-
+// JRChange: OpenPilot UAVTalk:
+#ifdef PROTOCOL_UAVTALK
+    if (uavtalk_read()) {
+        OnMavlinkTimer();
+    } else {
+	mavlinkTimer.Run();
+    }
+#else
     if(enable_mav_request == 1){//Request rate control
         osd.clear();
         osd.setPanel(3,10);
@@ -184,21 +241,86 @@ void loop()
     }
 
     read_mavlink();
+
     mavlinkTimer.Run();
+#endif
 }
 
 /* *********************************************** */
 /* ******** functions used in main loop() ******** */
-void OnMavlinkTimer()
+void OnMavlinkTimer()			// duration is up to approx. 10ms depending on choosen display features
 {
-    setHeadingPatern();  // generate the heading patern
 
-    //  osd_battery_pic_A = setBatteryPic(osd_battery_remaining_A);     // battery A remmaning picture
-    //osd_battery_pic_B = setBatteryPic(osd_battery_remaining_B);     // battery B remmaning picture
+#ifdef GPS_SIMULATION			// simple GPS data simulation
 
-    setHomeVars(osd);   // calculate and set Distance from home and Direction to home
+#define LAT_STEPS	0.000009	// about 1m
+#define LON_STEPS	0.000014	// about 1m at latitude of 48.8582�
+
+    if (!osd_got_home) {
+	osd_got_home = true;
+	osd_fix_type = 3;
+	osd_satellites_visible = 10;
+	osd_lat = 48.8582;		// see you in Paris ;-)
+	osd_lon =  2.2946;		// see you in Paris ;-)
+	osd_alt =  0.0;
+	osd_home_lat = osd_lat;
+	osd_home_lon = osd_lon;
+	osd_home_alt = osd_alt;
+    }
+
+#if 1 // cruising by stick inputs, quick and dirty and only for simulations
+#define P_OFFSET	100		// [us]	PWM offset for detecting stick movement
+    static int16_t chan1_r_middle = 0;
+    static int16_t chan2_r_middle = 0;
+
+    if (chan1_r_middle == 0 || chan2_r_middle == 0) {
+        chan1_r_middle = chan1_raw;
+        chan2_r_middle = chan2_raw;
+    }
     
-    writePanels();       // writing enabled panels (check OSD_Panels Tab)
+    if (chan2_raw > chan2_r_middle + P_OFFSET)		osd_lat -= LAT_STEPS;
+    else if (chan2_raw < chan2_r_middle - P_OFFSET)	osd_lat += LAT_STEPS;
+    
+    if (chan1_raw > chan1_r_middle + P_OFFSET)		osd_lon += LON_STEPS;
+    else if (chan1_raw < chan1_r_middle - P_OFFSET)	osd_lon -= LON_STEPS;
+    
+    osd_heading = 0.0;
+#else
+    osd_heading = osd_heading > 360.0 ? 0.0 : osd_heading + 0.5;
+    osd_lat -= LAT_STEPS;
+    osd_lon += LON_STEPS;
+#endif
+    osd_alt += 0.02;
+#endif
+
+#ifdef FLIGHT_BATT_ON_MINIMOSD
+    flight_batt_read();
+#endif
+
+#ifdef PACKETRXOK_ON_MINIMOSD
+    PacketRxOk_read();
+    rssi = (int16_t) osd_rssi;
+#endif
+
+#ifdef ANALOG_RSSI_ON_MINIMOSD
+    analog_rssi_read();
+    rssi = (int16_t) osd_rssi;
+    if (!rssiraw_on) rssi = (int16_t)((float)(rssi - rssipersent)/(float)(rssical-rssipersent)*100.0f);
+    if (rssi < -99) rssi = -99;
+#endif
+
+#ifdef RSSI_ON_REVO
+    rssi = osd_receiver_quality;
+#endif /* RSSI_ON_REVO */
+
+#ifdef JR_SPECIALS
+    calculateCompassPoint();		// calculate the compass point which is shown in panHeading
+#endif
+
+    updateTravelDistance();		// calculate travel distance
+    setHeadingPattern();		// generate the heading pattern
+    setHomeVars(osd);			// calculate and set Distance from home and Direction to home
+    writePanels();			// writing enabled panels (check OSD_Panels Tab)
 }
 
 

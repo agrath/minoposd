@@ -1,3 +1,6 @@
+// JRChange: OpenPilot UAVTalk:
+#ifndef PROTOCOL_UAVTALK
+
 #include "../GCS_MAVLink/include/mavlink/v1.0/mavlink_types.h"
 #include "../GCS_MAVLink/include/mavlink/v1.0/ardupilotmega/mavlink.h"
 
@@ -155,5 +158,5 @@ void read_mavlink(){
     // Update global packet drops counter
     packet_drops += status.packet_rx_drop_count;
     parse_error += status.parse_error;
-
 }
+#endif
