@@ -39,7 +39,7 @@
 #define LOW_VOLTAGE			9.6			// filter start value for 3s LiPo
 
 #define VOLT_DIV_RATIO			15.55			
-#define VOLT_OFFSET				0.1500	
+#define VOLT_OFFSET				-0.500	
 
 #define CURR_AMP_PER_VOLT		18.3	
 #define CURR_AMPS_OFFSET		0.0000	
