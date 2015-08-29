@@ -28,10 +28,10 @@
 //#define PACKETRXOK_ON_MINIMOSD
 
 // Amedee: Analog RSSI on MinimOSD:
-//#define ANALOG_RSSI_ON_MINIMOSD
+#define ANALOG_RSSI_ON_MINIMOSD
 
 // RSSI from Revo
-#define RSSI_ON_REVO
+//#define RSSI_ON_REVO
 
 // JRChange: artificial horizon original version
 //#define AH_ORIGINAL_VERSION
@@ -66,17 +66,17 @@
 //#define VERSION_RELEASE_14_06_1		// OpenPilot-RELEASE 14.06.1	'Peanuts Schnapps' .1
 //#define VERSION_RELEASE_14_10_1		// OpenPilot-RELEASE 14.10.1	'Mini Me' .1
 //#define VERSION_RELEASE_15_01_1		// OpenPilot-RELEASE 15.01.1	'Look, Ma... No Hands!' .1
-//#define VERSION_RELEASE_15_02_1		// OpenPilot-RELEASE 15.02.1	'Ragin' Cajun' .1
-#define VERSION_RELEASE_15_05		// OpenPilot-RELEASE 15.02.1	'Banana Split' .1
+#define VERSION_RELEASE_15_02_1		// OpenPilot-RELEASE 15.02.1	'Ragin' Cajun' .1
+//#define VERSION_RELEASE_15_05		// OpenPilot-RELEASE 15.02.1	'Banana Split' .1
 
 // Version string
-#define VERSION_STRING		osd.printf_P(PSTR("minoposd 15.05"));
+#define VERSION_STRING		osd.printf_P(PSTR("minoposd 15.02"));
 
 // OpenPilot additional UAVObjIds for unreleased and released versions
 #define VERSION_ADDITIONAL_UAVOBJID
 
 // OpenPilot Revo add ons
-#define REVO_ADD_ONS
+//#define REVO_ADD_ONS
 
 #define MEASURE_PERIOD		95	// ms
 
