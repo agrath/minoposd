@@ -90,26 +90,26 @@ void startPanels() {
 /******************************************************************/
 void writePanels() {
 
-#ifdef JR_SPECIALS
-	// reset osd_home to current position when 2 TX switches are in a special position
-	if (osd_chan6_raw > PWM_HI && osd_chan7_raw < PWM_LO) {
-		osd_home_lat = osd_lat;
-		osd_home_lon = osd_lon;
-		osd_home_alt = osd_alt;
-		osd.setPanel(10, 3);
-		osd.openPanel();
-		osd.printf_P(PSTR("reset home"));
-		osd.closePanel();
-	}
-	else if (ch_toggle > 3) switchPanels();									// switch panels
-#else
-	if (ch_toggle > 3) switchPanels();										// switch panels
-#endif
+//#ifdef JR_SPECIALS
+//	// reset osd_home to current position when 2 TX switches are in a special position
+//	if (osd_chan6_raw > PWM_HI && osd_chan7_raw < PWM_LO) {
+//		osd_home_lat = osd_lat;
+//		osd_home_lon = osd_lon;
+//		osd_home_alt = osd_alt;
+//		osd.setPanel(10, 3);
+//		osd.openPanel();
+//		osd.printf_P(PSTR("reset home"));
+//		osd.closePanel();
+//	}
+//	else if (ch_toggle > 3) switchPanels();									// switch panels
+//#else
+//	if (ch_toggle > 3) switchPanels();										// switch panels
+//#endif
 
-	if (setup_menu_active) {
-		panSetup();
-	}
-	else {
+	//if (setup_menu_active) {
+	//	panSetup();
+	//}
+	//else {
 		if (ISd(0, Warn_BIT)) panWarn(panWarn_XY[0][0], panWarn_XY[1][0]);					// ever check/display warnings
 		if (panel < npanels) {											// first or second panel
 		// these GPS related panels are active under all circumstances
@@ -156,7 +156,7 @@ void writePanels() {
 		else { // off panel
 			panOff();
 		}
-	}
+	//}
 
 #ifdef membug
 	// OSD debug for development
@@ -173,98 +173,98 @@ void writePanels() {
 // Output : Switch between panels
 // TODO   : REFACTOR
 /******************************************************************/
-void switchPanels() {
-	static uint8_t      	osd_off_switch = 0;
-	static uint8_t      	osd_switch_last = 100;
-	static unsigned long	osd_switch_time = 0;
-	static uint16_t		ch_raw = 0;
-
-	if (ch_toggle == 4) {
-		if (osd_mode < 4) {
-			if (osd_off_switch != osd_mode) {
-				osd_off_switch = osd_mode;
-				osd_switch_time = millis();
-
-				if (osd_off_switch == osd_switch_last) {
-					switch (panel) {
-					case 0:
-						panel = 1;
-						if (millis() <= SETUP_TIME) {
-							setup_menu_active = true;
-						}
-						else {
-							setup_menu_active = false;
-						}
-						break;
-					case 1:
-						panel = npanels;
-						setup_menu_active = false;
-						break;
-					case npanels:
-						panel = 0;
-						break;
-					}
-					osd.clear();
-				}
-			}
-			if ((millis() - osd_switch_time) > MODE_SWITCH_TIME) {
-				osd_switch_last = osd_mode;
-			}
-		}
-	}
-	else {
-		if (ch_toggle == 5) ch_raw = osd_chan5_raw;
-		else if (ch_toggle == 6) ch_raw = osd_chan6_raw;
-		else if (ch_toggle == 7) ch_raw = osd_chan7_raw;
-		else if (ch_toggle == 8) ch_raw = osd_chan8_raw;
-
-		if (switch_mode == 0) {
-			if (ch_raw > PWM_HI) {
-				if (millis() <= SETUP_TIME) {
-					setup_menu_active = true;
-				}
-				else if (!setup_menu_active && !warning_active) {
-					osd.clear();
-				}
-				panel = npanels;				// off panel
-			}
-			else if (ch_raw < PWM_LO && panel != 0) {
-				setup_menu_active = false;
-				osd.clear();
-				panel = 0;					// first panel
-			}
-			else if (ch_raw >= PWM_LO && ch_raw <= PWM_HI && panel != 1 && !warning_active) {
-				setup_menu_active = false;
-				osd.clear();
-				panel = 1;					// second panel
-			}
-		}
-		else {
-			if (ch_raw > PWM_LO) {
-				if (millis() <= SETUP_TIME && !setup_menu_active) {
-					if (osd_switch_time + MODE_SWITCH_TIME / 2 < millis()) {
-						setup_menu_active = true;
-						osd_switch_time = millis();
-					}
-				}
-				else {
-					if (osd_switch_time + MODE_SWITCH_TIME / 2 < millis()) {
-						setup_menu_active = false;
-						osd.clear();
-						if (panel == npanels) {
-							panel = 0;
-						}
-						else {
-							panel++;
-						}
-						if (panel > 1) panel = npanels;
-						osd_switch_time = millis();
-					}
-				}
-			}
-		}
-	}
-}
+//void switchPanels() {
+//	static uint8_t      	osd_off_switch = 0;
+//	static uint8_t      	osd_switch_last = 100;
+//	static unsigned long	osd_switch_time = 0;
+//	static uint16_t		ch_raw = 0;
+//
+//	if (ch_toggle == 4) {
+//		if (osd_mode < 4) {
+//			if (osd_off_switch != osd_mode) {
+//				osd_off_switch = osd_mode;
+//				osd_switch_time = millis();
+//
+//				if (osd_off_switch == osd_switch_last) {
+//					switch (panel) {
+//					case 0:
+//						panel = 1;
+//						if (millis() <= SETUP_TIME) {
+//							setup_menu_active = true;
+//						}
+//						else {
+//							setup_menu_active = false;
+//						}
+//						break;
+//					case 1:
+//						panel = npanels;
+//						setup_menu_active = false;
+//						break;
+//					case npanels:
+//						panel = 0;
+//						break;
+//					}
+//					osd.clear();
+//				}
+//			}
+//			if ((millis() - osd_switch_time) > MODE_SWITCH_TIME) {
+//				osd_switch_last = osd_mode;
+//			}
+//		}
+//	}
+//	else {
+//		if (ch_toggle == 5) ch_raw = osd_chan5_raw;
+//		else if (ch_toggle == 6) ch_raw = osd_chan6_raw;
+//		else if (ch_toggle == 7) ch_raw = osd_chan7_raw;
+//		else if (ch_toggle == 8) ch_raw = osd_chan8_raw;
+//
+//		if (switch_mode == 0) {
+//			if (ch_raw > PWM_HI) {
+//				if (millis() <= SETUP_TIME) {
+//					setup_menu_active = true;
+//				}
+//				else if (!setup_menu_active && !warning_active) {
+//					osd.clear();
+//				}
+//				panel = npanels;				// off panel
+//			}
+//			else if (ch_raw < PWM_LO && panel != 0) {
+//				setup_menu_active = false;
+//				osd.clear();
+//				panel = 0;					// first panel
+//			}
+//			else if (ch_raw >= PWM_LO && ch_raw <= PWM_HI && panel != 1 && !warning_active) {
+//				setup_menu_active = false;
+//				osd.clear();
+//				panel = 1;					// second panel
+//			}
+//		}
+//		else {
+//			if (ch_raw > PWM_LO) {
+//				if (millis() <= SETUP_TIME && !setup_menu_active) {
+//					if (osd_switch_time + MODE_SWITCH_TIME / 2 < millis()) {
+//						setup_menu_active = true;
+//						osd_switch_time = millis();
+//					}
+//				}
+//				else {
+//					if (osd_switch_time + MODE_SWITCH_TIME / 2 < millis()) {
+//						setup_menu_active = false;
+//						osd.clear();
+//						if (panel == npanels) {
+//							panel = 0;
+//						}
+//						else {
+//							panel++;
+//						}
+//						if (panel > 1) panel = npanels;
+//						osd_switch_time = millis();
+//					}
+//				}
+//			}
+//		}
+//	}
+//}
 
 
 /******* SPECIAL PANELS *******/
@@ -386,89 +386,89 @@ void panWarn(int first_col, int first_line) {
 // Needs  : Nothing, uses whole screen
 // Output : The settings menu
 /******************************************************************/
-void panSetup() {
-	static unsigned long setup_debounce_timer = 0;
-	static int8_t setup_menu = 0;
-	int delta = 100;
-
-	if (millis() > setup_debounce_timer) {			// RC-TX stick debouncing
-		setup_debounce_timer = millis() + SETUP_DEBOUNCE_TIME;
-
-		osd.clear();
-		osd.setPanel(5, 3);
-		osd.openPanel();
-
-		osd.printf_P(PSTR("setup screen|||"));
-
-		if (chan1_raw_middle == 0 || chan2_raw_middle == 0) {
-			chan1_raw_middle = chan1_raw;
-			chan2_raw_middle = chan2_raw;
-		}
-
-		if ((chan2_raw - PWM_OFFSET) > chan2_raw_middle) setup_menu++;
-		else if ((chan2_raw + PWM_OFFSET) < chan2_raw_middle) setup_menu--;
-
-		if (setup_menu < SETUP_LOWEST_MENU) setup_menu = SETUP_LOWEST_MENU;
-		else if (setup_menu > SETUP_HIGHEST_MENU) setup_menu = SETUP_HIGHEST_MENU;
-
-		switch (setup_menu) {
-		case 1:
-			osd.printf_P(PSTR("uavtalk "));
-			if (op_uavtalk_mode & UAVTALK_MODE_PASSIVE) {
-				osd.printf_P(PSTR("passive"));
-				if (chan1_raw < chan1_raw_middle - PWM_OFFSET)
-					op_uavtalk_mode &= ~UAVTALK_MODE_PASSIVE;
-			}
-			else {
-				osd.printf_P(PSTR("active "));
-				if (chan1_raw > chan1_raw_middle + PWM_OFFSET)
-					op_uavtalk_mode |= UAVTALK_MODE_PASSIVE;
-			}
-			break;
-		case 2:
-			osd.printf_P(PSTR("battery warning "));
-			osd.printf("%3.1f%c", float(battv) / 10.0, 0x76, 0x20);
-			battv = change_val(battv, battv_ADDR);
-			break;
-#ifdef FLIGHT_BATT_ON_MINIMOSD
-		case 5:
-			delta /= 10;
-		case 4:
-			delta /= 10;
-		case 3:
-			// volt_div_ratio
-			osd.printf_P(PSTR("calibrate||measured volt: "));
-			osd.printf("%c%5.2f%c", 0xE2, (float)osd_vbat_A, 0x8E);
-			osd.printf("||volt div ratio:  %5i", volt_div_ratio);
-			volt_div_ratio = change_int_val(volt_div_ratio, volt_div_ratio_ADDR, delta);
-			break;
-		case 8:
-			delta /= 10;
-		case 7:
-			delta /= 10;
-		case 6:
-			// curr_amp_offset
-			osd.printf_P(PSTR("calibrate||measured amp:  "));
-			osd.printf("%c%5.2f%c", 0xE2, osd_curr_A * .01, 0x8F);
-			osd.printf("||amp offset:      %5i", curr_amp_offset);
-			curr_amp_offset = change_int_val(curr_amp_offset, curr_amp_offset_ADDR, delta);
-			break;
-		case 11:
-			delta /= 10;
-		case 10:
-			delta /= 10;
-		case 9:
-			// curr_amp_per_volt
-			osd.printf_P(PSTR("calibrate||measured amp:  "));
-			osd.printf("%c%5.2f%c", 0xE2, osd_curr_A * .01, 0x8F);
-			osd.printf("||amp per volt:    %5i", curr_amp_per_volt);
-			curr_amp_per_volt = change_int_val(curr_amp_per_volt, curr_amp_per_volt_ADDR, delta);
-			break;
-#endif
-		}
-		osd.closePanel();
-	}
-}
+//void panSetup() {
+//	static unsigned long setup_debounce_timer = 0;
+//	static int8_t setup_menu = 0;
+//	int delta = 100;
+//
+//	if (millis() > setup_debounce_timer) {			// RC-TX stick debouncing
+//		setup_debounce_timer = millis() + SETUP_DEBOUNCE_TIME;
+//
+//		osd.clear();
+//		osd.setPanel(5, 3);
+//		osd.openPanel();
+//
+//		osd.printf_P(PSTR("setup screen|||"));
+//
+//		if (chan1_raw_middle == 0 || chan2_raw_middle == 0) {
+//			chan1_raw_middle = chan1_raw;
+//			chan2_raw_middle = chan2_raw;
+//		}
+//
+//		if ((chan2_raw - PWM_OFFSET) > chan2_raw_middle) setup_menu++;
+//		else if ((chan2_raw + PWM_OFFSET) < chan2_raw_middle) setup_menu--;
+//
+//		if (setup_menu < SETUP_LOWEST_MENU) setup_menu = SETUP_LOWEST_MENU;
+//		else if (setup_menu > SETUP_HIGHEST_MENU) setup_menu = SETUP_HIGHEST_MENU;
+//
+//		switch (setup_menu) {
+//		case 1:
+//			osd.printf_P(PSTR("uavtalk "));
+//			if (op_uavtalk_mode & UAVTALK_MODE_PASSIVE) {
+//				osd.printf_P(PSTR("passive"));
+//				if (chan1_raw < chan1_raw_middle - PWM_OFFSET)
+//					op_uavtalk_mode &= ~UAVTALK_MODE_PASSIVE;
+//			}
+//			else {
+//				osd.printf_P(PSTR("active "));
+//				if (chan1_raw > chan1_raw_middle + PWM_OFFSET)
+//					op_uavtalk_mode |= UAVTALK_MODE_PASSIVE;
+//			}
+//			break;
+//		case 2:
+//			osd.printf_P(PSTR("battery warning "));
+//			osd.printf("%3.1f%c", float(battv) / 10.0, 0x76, 0x20);
+//			battv = change_val(battv, battv_ADDR);
+//			break;
+//#ifdef FLIGHT_BATT_ON_MINIMOSD
+//		case 5:
+//			delta /= 10;
+//		case 4:
+//			delta /= 10;
+//		case 3:
+//			// volt_div_ratio
+//			osd.printf_P(PSTR("calibrate||measured volt: "));
+//			osd.printf("%c%5.2f%c", 0xE2, (float)osd_vbat_A, 0x8E);
+//			osd.printf("||volt div ratio:  %5i", volt_div_ratio);
+//			volt_div_ratio = change_int_val(volt_div_ratio, volt_div_ratio_ADDR, delta);
+//			break;
+//		case 8:
+//			delta /= 10;
+//		case 7:
+//			delta /= 10;
+//		case 6:
+//			// curr_amp_offset
+//			osd.printf_P(PSTR("calibrate||measured amp:  "));
+//			osd.printf("%c%5.2f%c", 0xE2, osd_curr_A * .01, 0x8F);
+//			osd.printf("||amp offset:      %5i", curr_amp_offset);
+//			curr_amp_offset = change_int_val(curr_amp_offset, curr_amp_offset_ADDR, delta);
+//			break;
+//		case 11:
+//			delta /= 10;
+//		case 10:
+//			delta /= 10;
+//		case 9:
+//			// curr_amp_per_volt
+//			osd.printf_P(PSTR("calibrate||measured amp:  "));
+//			osd.printf("%c%5.2f%c", 0xE2, osd_curr_A * .01, 0x8F);
+//			osd.printf("||amp per volt:    %5i", curr_amp_per_volt);
+//			curr_amp_per_volt = change_int_val(curr_amp_per_volt, curr_amp_per_volt_ADDR, delta);
+//			break;
+//#endif
+//		}
+//		osd.closePanel();
+//	}
+//}
 
 
 /******* PANELS *******/
