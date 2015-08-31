@@ -220,56 +220,10 @@ void loop()
 void OnTick()			// duration is up to approx. 10ms depending on choosen display features
 {
 
-#ifdef GPS_SIMULATION			// simple GPS data simulation
-
-#define LAT_STEPS	0.000009	// about 1m
-#define LON_STEPS	0.000014	// about 1m at latitude of 48.8582�
-
-	if (!osd_got_home) {
-		osd_got_home = true;
-		osd_fix_type = 3;
-		osd_satellites_visible = 10;
-		osd_lat = 48.8582;		// see you in Paris ;-)
-		osd_lon = 2.2946;		// see you in Paris ;-)
-		osd_alt = 0.0;
-		osd_home_lat = osd_lat;
-		osd_home_lon = osd_lon;
-		osd_home_alt = osd_alt;
-	}
-
-#if 1 // cruising by stick inputs, quick and dirty and only for simulations
-#define P_OFFSET	100		// [us]	PWM offset for detecting stick movement
-	static int16_t chan1_r_middle = 0;
-	static int16_t chan2_r_middle = 0;
-
-	if (chan1_r_middle == 0 || chan2_r_middle == 0) {
-		chan1_r_middle = chan1_raw;
-		chan2_r_middle = chan2_raw;
-	}
-
-	if (chan2_raw > chan2_r_middle + P_OFFSET)		osd_lat -= LAT_STEPS;
-	else if (chan2_raw < chan2_r_middle - P_OFFSET)	osd_lat += LAT_STEPS;
-
-	if (chan1_raw > chan1_r_middle + P_OFFSET)		osd_lon += LON_STEPS;
-	else if (chan1_raw < chan1_r_middle - P_OFFSET)	osd_lon -= LON_STEPS;
-
-	osd_heading = 0.0;
-#else
-	osd_heading = osd_heading > 360.0 ? 0.0 : osd_heading + 0.5;
-	osd_lat -= LAT_STEPS;
-	osd_lon += LON_STEPS;
-#endif
-	osd_alt += 0.02;
-#endif
-
 #ifdef FLIGHT_BATT_ON_MINIMOSD
 	flight_batt_read();
 #endif
 
-#ifdef PACKETRXOK_ON_MINIMOSD
-	PacketRxOk_read();
-	rssi = (int16_t)osd_rssi;
-#endif
 
 #ifdef ANALOG_RSSI_ON_MINIMOSD
 	analog_rssi_read();
@@ -278,17 +232,6 @@ void OnTick()			// duration is up to approx. 10ms depending on choosen display f
 	if (rssi < -99) rssi = -99;
 #endif
 
-#ifdef RSSI_ON_REVO
-	rssi = osd_receiver_quality;
-#endif /* RSSI_ON_REVO */
-
-#ifdef JR_SPECIALS
-	calculateCompassPoint();		// calculate the compass point which is shown in panHeading
-#endif
-
-	updateTravelDistance();		// calculate travel distance
-	setHeadingPattern();		// generate the heading pattern
-	setHomeVars(osd);			// calculate and set Distance from home and Direction to home
 	writePanels();			// writing enabled panels (check OSD_Panels Tab)
 }
 

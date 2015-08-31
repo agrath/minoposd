@@ -397,15 +397,6 @@ int uavtalk_read(void) {
 	static uint8_t inited = 0;
 	uint8_t show_prio_info = 0;
 	
-#ifdef FLIGHT_BATT_ON_REVO
-	if (gcstelemetrystatus == TELEMETRYSTATS_STATE_CONNECTED && !inited) {
-		/* Request flight battery settings */
-		uavtalk_request_object(FLIGHTBATTERYSETTINGS_OBJID);
-		uavtalk_request_object(FLIGHTBATTERYSETTINGS_OBJID_001);
-		inited = 1;
-	}
-#endif
-
 	// grabbing data
 	while (!show_prio_info && Serial.available() > 0) {
 		uint8_t c = Serial.read();
@@ -499,59 +490,15 @@ int uavtalk_read(void) {
 					osd_chan7_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_7);
 					osd_chan8_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_8);
 				break;
-#ifndef GPS_SIMULATION
+
 				case GPSPOSITION_OBJID:
 				case GPSPOSITIONSENSOR_OBJID:
 				case GPSPOSITIONSENSOR_OBJID_001:
 				case GPSPOSITIONSENSOR_OBJID_002:
-					osd_lat			= uavtalk_get_int32(&msg, GPSPOSITION_OBJ_LAT) / 10000000.0;
-					osd_lon			= uavtalk_get_int32(&msg, GPSPOSITION_OBJ_LON) / 10000000.0;
-					osd_satellites_visible	= uavtalk_get_int8(&msg, GPSPOSITION_OBJ_SATELLITES);
-					osd_fix_type		= uavtalk_get_int8(&msg, GPSPOSITION_OBJ_STATUS);
-					osd_heading		= uavtalk_get_float(&msg, GPSPOSITION_OBJ_HEADING);
-					osd_alt			= uavtalk_get_float(&msg, GPSPOSITION_OBJ_ALTITUDE);
-					osd_groundspeed		= uavtalk_get_float(&msg, GPSPOSITION_OBJ_GROUNDSPEED);
-				break;
-#endif
-// because of #define PIOS_GPS_MINIMAL in the OP flight code, the following is unfortunately currently not supported:
-#if 0
 				case GPSTIME_OBJID:
-        				osd_time_hour		= uavtalk_get_int8(&msg, GPSTIME_OBJ_HOUR);
-        				osd_time_minute		= uavtalk_get_int8(&msg, GPSTIME_OBJ_MINUTE);
-				break;
-#endif
 				case GPSVELOCITY_OBJID:
 				case GPSVELOCITYSENSOR_OBJID:
-					osd_climb		= -1.0 * uavtalk_get_float(&msg, GPSVELOCITY_OBJ_DOWN);
-				break;
-#ifdef FLIGHT_BATT_ON_REVO
-				case FLIGHTBATTERYSTATE_OBJID:
-				case FLIGHTBATTERYSTATE_OBJID_001:
-        				osd_vbat_A		= uavtalk_get_float(&msg, FLIGHTBATTERYSTATE_OBJ_VOLTAGE);
-					osd_curr_A		= (int16_t) (100.0 * uavtalk_get_float(&msg, FLIGHTBATTERYSTATE_OBJ_CURRENT));
-					osd_total_A		= (int16_t) uavtalk_get_float(&msg, FLIGHTBATTERYSTATE_OBJ_CONSUMED_ENERGY);
-					osd_est_flight_time	= (int16_t) uavtalk_get_float(&msg, FLIGHTBATTERYSTATE_OBJ_ESTIMATED_FLIGHT_TIME);
-				break;
-				case FLIGHTBATTERYSETTINGS_OBJID:
-				case FLIGHTBATTERYSETTINGS_OBJID_001:
-					osd_ncells_A = uavtalk_get_int8(&msg, FLIGHTBATTERYSETTINGS_OBJ_NBCELLS);
-					battv = (uint8_t)(10.0 * uavtalk_get_float(&msg, FLIGHTBATTERYSETTINGS_OBJ_VCELL_WARN) * osd_ncells_A);
 					break;
-#endif
-#ifdef REVO_ADD_ONS
-				case BAROALTITUDE_OBJID:
-				case BAROSENSOR_OBJID:
-					revo_baro_alt		= (int16_t) uavtalk_get_float(&msg, BAROALTITUDE_OBJ_ALTITUDE);
-				break;
-				case OPLINKSTATUS_OBJID:
-#ifdef VERSION_ADDITIONAL_UAVOBJID
-				case OPLINKSTATUS_OBJID_001:
-				case OPLINKSTATUS_OBJID_002:
-#endif
-        				oplm_rssi		= uavtalk_get_int8(&msg, OPLINKSTATUS_OBJ_RSSI);
-        				oplm_linkquality	= uavtalk_get_int8(&msg, OPLINKSTATUS_OBJ_LINKQUALITY);
-				break;
-#endif
 				case RECEIVERSTATUS_OBJID:
 					osd_receiver_quality	= uavtalk_get_int8(&msg, RECEIVERSTATUS_OBJ_QUALITY);
 				break;
