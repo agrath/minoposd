@@ -77,9 +77,11 @@ void OSD::detectMode()
 
     if (EEPROM.read(PAL_NTSC_ADDR) == 1){
         setMode(1);
-        digitalWrite(MAX7456_SELECT,LOW);
     } 
-    else setMode(0);
+	else
+	{
+		setMode(0);
+	}
     digitalWrite(MAX7456_SELECT,LOW);
 }
 
