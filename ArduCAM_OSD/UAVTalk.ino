@@ -9,21 +9,21 @@
  * @see        The GNU Public License (GPL) Version 3
  *
  *****************************************************************************/
-/*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, see <http://www.gnu.org/licenses/> or write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+ /*
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation; either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful, but
+  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  *
+  * You should have received a copy of the GNU General Public License along
+  * with this program; if not, see <http://www.gnu.org/licenses/> or write to the
+  * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  */
 
 
 #include "UAVTalk.h"
@@ -31,7 +31,7 @@
 
 #ifdef PROTOCOL_UAVTALK
 
-//#define DEBUG
+  //#define DEBUG
 
 static unsigned long last_flighttelemetry_connect = 0;
 static uint8_t gcstelemetrystatus = TELEMETRYSTATS_STATE_DISCONNECTED;
@@ -88,53 +88,53 @@ void uavtalk_show_msg(uint8_t y, uavtalk_message_t *msg) {
 
 	osd.setPanel(1, y);
 	osd.openPanel();
-	
+
 	osd.printf("%6u header ", millis());
-	c = (uint8_t) (msg->Sync);
+	c = (uint8_t)(msg->Sync);
 	osd.printf("%2x ", c);
 	crc = crc_table[0 ^ c];
-	c = (uint8_t) (msg->MsgType);
+	c = (uint8_t)(msg->MsgType);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) (msg->Length & 0xff);
+	c = (uint8_t)(msg->Length & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) ((msg->Length >> 8) & 0xff);
+	c = (uint8_t)((msg->Length >> 8) & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) (msg->ObjID & 0xff);
+	c = (uint8_t)(msg->ObjID & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) ((msg->ObjID >> 8) & 0xff);
+	c = (uint8_t)((msg->ObjID >> 8) & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) ((msg->ObjID >> 16) & 0xff);
+	c = (uint8_t)((msg->ObjID >> 16) & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) ((msg->ObjID >> 24) & 0xff);
+	c = (uint8_t)((msg->ObjID >> 24) & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
 
 #if defined VERSION_RELEASE_12_10_1 || defined VERSION_RELEASE_12_10_2 || defined VERSION_RELEASE_13_06_1 || defined VERSION_RELEASE_13_06_2
 #else
-	c = (uint8_t) (msg->InstID & 0xff);
+	c = (uint8_t)(msg->InstID & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
-	c = (uint8_t) ((msg->InstID >> 8) & 0xff);
+	c = (uint8_t)((msg->InstID >> 8) & 0xff);
 	osd.printf("%2x ", c);
 	crc = crc_table[crc ^ c];
 #endif
-	
+
 	osd.printf("data ");
 	if (msg->Length > HEADER_LEN) {
-	  d = msg->Data;
-	  for (i=0; i<msg->Length-HEADER_LEN; i++) {
-		c = *d++;
-	        osd.printf("%2x ", c);
-		crc = crc_table[crc ^ c];
-          }
+		d = msg->Data;
+		for (i = 0; i < msg->Length - HEADER_LEN; i++) {
+			c = *d++;
+			osd.printf("%2x ", c);
+			crc = crc_table[crc ^ c];
+		}
 	}
-	
+
 	osd.printf("crc ");
 	osd.printf("%2x(%2x)", msg->Crc, crc);
 
@@ -150,21 +150,21 @@ static inline int8_t uavtalk_get_int8(uavtalk_message_t *msg, int pos) {
 
 static inline int16_t uavtalk_get_int16(uavtalk_message_t *msg, int pos) {
 	int16_t i;
-	memcpy(&i, msg->Data+pos, sizeof(int16_t));
+	memcpy(&i, msg->Data + pos, sizeof(int16_t));
 	return i;
 }
 
 
 static inline int32_t uavtalk_get_int32(uavtalk_message_t *msg, int pos) {
 	int32_t i;
-	memcpy(&i, msg->Data+pos, sizeof(int32_t));
+	memcpy(&i, msg->Data + pos, sizeof(int32_t));
 	return i;
 }
 
 
 static inline float uavtalk_get_float(uavtalk_message_t *msg, int pos) {
 	float f;
-	memcpy(&f, msg->Data+pos, sizeof(float));
+	memcpy(&f, msg->Data + pos, sizeof(float));
 	return f;
 }
 
@@ -173,32 +173,32 @@ void uavtalk_send_msg(uavtalk_message_t *msg) {
 	uint8_t *d;
 	uint8_t i;
 	uint8_t c;
-	
+
 	if (op_uavtalk_mode & UAVTALK_MODE_PASSIVE)
 		return;
-	
-	c = (uint8_t) (msg->Sync);
+
+	c = (uint8_t)(msg->Sync);
 	Serial.write(c);
 	msg->Crc = crc_table[0 ^ c];
-	c = (uint8_t) (msg->MsgType);
+	c = (uint8_t)(msg->MsgType);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
-	c = (uint8_t) (msg->Length & 0xff);
+	c = (uint8_t)(msg->Length & 0xff);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
-	c = (uint8_t) ((msg->Length >> 8) & 0xff);
+	c = (uint8_t)((msg->Length >> 8) & 0xff);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
-	c = (uint8_t) (msg->ObjID & 0xff);
+	c = (uint8_t)(msg->ObjID & 0xff);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
-	c = (uint8_t) ((msg->ObjID >> 8) & 0xff);
+	c = (uint8_t)((msg->ObjID >> 8) & 0xff);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
-	c = (uint8_t) ((msg->ObjID >> 16) & 0xff);
+	c = (uint8_t)((msg->ObjID >> 16) & 0xff);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
-	c = (uint8_t) ((msg->ObjID >> 24) & 0xff);
+	c = (uint8_t)((msg->ObjID >> 24) & 0xff);
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
 
@@ -211,14 +211,14 @@ void uavtalk_send_msg(uavtalk_message_t *msg) {
 	Serial.write(c);
 	msg->Crc = crc_table[msg->Crc ^ c];
 #endif
-        
+
 	if (msg->Length > HEADER_LEN) {
-	  d = msg->Data;
-	  for (i=0; i<msg->Length-HEADER_LEN; i++) {
-		c = *d++;
-		Serial.write(c);
-		msg->Crc = crc_table[msg->Crc ^ c];
-          }
+		d = msg->Data;
+		for (i = 0; i < msg->Length - HEADER_LEN; i++) {
+			c = *d++;
+			Serial.write(c);
+			msg->Crc = crc_table[msg->Crc ^ c];
+		}
 	}
 	Serial.write(msg->Crc);
 }
@@ -226,24 +226,24 @@ void uavtalk_send_msg(uavtalk_message_t *msg) {
 
 void uavtalk_respond_object(uavtalk_message_t *msg_to_respond, uint8_t type) {
 	uavtalk_message_t msg;
-	
-	msg.Sync	= UAVTALK_SYNC_VAL;
-	msg.MsgType	= type;
-	msg.Length	= RESPOND_OBJ_LEN;
-	msg.ObjID	= msg_to_respond->ObjID;
-	
+
+	msg.Sync = UAVTALK_SYNC_VAL;
+	msg.MsgType = type;
+	msg.Length = RESPOND_OBJ_LEN;
+	msg.ObjID = msg_to_respond->ObjID;
+
 	uavtalk_send_msg(&msg);
 }
 
 
 void uavtalk_request_object(uint32_t id) {
 	uavtalk_message_t msg;
-	
-	msg.Sync	= UAVTALK_SYNC_VAL;
-	msg.MsgType	= UAVTALK_TYPE_OBJ_REQ;
-	msg.Length	= REQUEST_OBJ_LEN;
-	msg.ObjID	= id;
-	
+
+	msg.Sync = UAVTALK_SYNC_VAL;
+	msg.MsgType = UAVTALK_TYPE_OBJ_REQ;
+	msg.Length = REQUEST_OBJ_LEN;
+	msg.ObjID = id;
+
 	uavtalk_send_msg(&msg);
 }
 
@@ -254,19 +254,19 @@ void uavtalk_send_gcstelemetrystats(void) {
 	uint8_t i;
 	uavtalk_message_t msg;
 
-	msg.Sync	= UAVTALK_SYNC_VAL;
-	msg.MsgType	= UAVTALK_TYPE_OBJ_ACK;
-	msg.Length	= gcstelemetrystats_obj_len + HEADER_LEN;
-	msg.ObjID	= gcstelemetrystats_objid;
+	msg.Sync = UAVTALK_SYNC_VAL;
+	msg.MsgType = UAVTALK_TYPE_OBJ_ACK;
+	msg.Length = gcstelemetrystats_obj_len + HEADER_LEN;
+	msg.ObjID = gcstelemetrystats_objid;
 
 	d = msg.Data;
-	for (i=0; i<gcstelemetrystats_obj_len; i++) {
+	for (i = 0; i < gcstelemetrystats_obj_len; i++) {
 		*d++ = 0;
 	}
 
 	msg.Data[gcstelemetrystats_obj_status] = gcstelemetrystatus;
 	// remaining data unused and unset
-	
+
 	uavtalk_send_msg(&msg);
 	last_gcstelemetrystats_send = millis();
 }
@@ -279,113 +279,118 @@ uint8_t uavtalk_parse_char(uint8_t c, uavtalk_message_t *msg) {
 	static uint8_t cnt = 0;
 
 	switch (status) {
-		case UAVTALK_PARSE_STATE_WAIT_SYNC:
-			if (c == UAVTALK_SYNC_VAL) {
-				status = UAVTALK_PARSE_STATE_GOT_SYNC;
-				msg->Sync = c;
-				crc = crc_table[0 ^ c];
-			}
+	case UAVTALK_PARSE_STATE_WAIT_SYNC:
+		if (c == UAVTALK_SYNC_VAL) {
+			status = UAVTALK_PARSE_STATE_GOT_SYNC;
+			msg->Sync = c;
+			crc = crc_table[0 ^ c];
+		}
 		break;
-		case UAVTALK_PARSE_STATE_GOT_SYNC:
-			crc = crc_table[crc ^ c];
-			if ((c & UAVTALK_TYPE_MASK) == UAVTALK_TYPE_VER) {
-				status = UAVTALK_PARSE_STATE_GOT_MSG_TYPE;
-				msg->MsgType = c;
-				cnt = 0;
-			}
-			else {
+	case UAVTALK_PARSE_STATE_GOT_SYNC:
+		crc = crc_table[crc ^ c];
+		if ((c & UAVTALK_TYPE_MASK) == UAVTALK_TYPE_VER) {
+			status = UAVTALK_PARSE_STATE_GOT_MSG_TYPE;
+			msg->MsgType = c;
+			cnt = 0;
+		}
+		else {
+			status = UAVTALK_PARSE_STATE_WAIT_SYNC;
+		}
+		break;
+	case UAVTALK_PARSE_STATE_GOT_MSG_TYPE:
+		crc = crc_table[crc ^ c];
+		cnt++;
+		if (cnt < 2) {
+			msg->Length = ((uint16_t)c);
+		}
+		else {
+			msg->Length += ((uint16_t)c) << 8;
+			if ((msg->Length < HEADER_LEN) || (msg->Length > 255 + HEADER_LEN)) {
+				// Drop corrupted messages:
+				// Minimal length is HEADER_LEN
+				// Maximum is HEADER_LEN + 255 (Data) + 2 (Optional Instance Id)
+				// As we are not parsing Instance Id, 255 is a hard maximum. 
 				status = UAVTALK_PARSE_STATE_WAIT_SYNC;
 			}
-		break;
-		case UAVTALK_PARSE_STATE_GOT_MSG_TYPE:
-			crc = crc_table[crc ^ c];
-			cnt++;
-			if (cnt < 2) {
-				msg->Length = ((uint16_t) c);
-			}
 			else {
-				msg->Length += ((uint16_t) c) << 8;
-                                if ((msg->Length < HEADER_LEN) || (msg->Length > 255 + HEADER_LEN)) {
-                                       // Drop corrupted messages:
-                                       // Minimal length is HEADER_LEN
-                                       // Maximum is HEADER_LEN + 255 (Data) + 2 (Optional Instance Id)
-                                       // As we are not parsing Instance Id, 255 is a hard maximum. 
-				       status = UAVTALK_PARSE_STATE_WAIT_SYNC;
-                                } else {
-				       status = UAVTALK_PARSE_STATE_GOT_LENGTH;
-				       cnt = 0;
-                                }
-			}
-		break;
-		case UAVTALK_PARSE_STATE_GOT_LENGTH:
-			crc = crc_table[crc ^ c];
-			cnt++;
-			switch (cnt) {
-				case 1:
-					msg->ObjID = ((uint32_t) c);
-				break;
-				case 2:
-					msg->ObjID += ((uint32_t) c) << 8;
-				break;
-				case 3:
-					msg->ObjID += ((uint32_t) c) << 16;
-				break;
-				case 4:
-					msg->ObjID += ((uint32_t) c) << 24;
-#if defined VERSION_RELEASE_12_10_1 || defined VERSION_RELEASE_12_10_2 || defined VERSION_RELEASE_13_06_1 || defined VERSION_RELEASE_13_06_2
-					if (msg->Length == HEADER_LEN) { // no data exists
-						status = UAVTALK_PARSE_STATE_GOT_DATA;
-					} else {
-						status = UAVTALK_PARSE_STATE_GOT_INSTID;
-                                        }
-#else
-					status = UAVTALK_PARSE_STATE_GOT_OBJID;
-#endif
-					cnt = 0;
-				break;
-			}
-		break;
-		case UAVTALK_PARSE_STATE_GOT_OBJID:
-			crc = crc_table[crc ^ c];
-			cnt++;
-			switch (cnt) {
-				case 1:
-					msg->InstID = ((uint32_t) c);
-				break;
-				case 2:
-					msg->InstID += ((uint32_t) c) << 8;
-					if (msg->Length == HEADER_LEN) { // no data exists
-						status = UAVTALK_PARSE_STATE_GOT_DATA;
-					} else {
-						status = UAVTALK_PARSE_STATE_GOT_INSTID;
-					}
-					cnt = 0;
-				break;
-			}
-		break;
-		case UAVTALK_PARSE_STATE_GOT_INSTID:
-			crc = crc_table[crc ^ c];
-			cnt++;
-			msg->Data[cnt - 1] = c;
-			if (cnt >= msg->Length - HEADER_LEN) {
-				status = UAVTALK_PARSE_STATE_GOT_DATA;
+				status = UAVTALK_PARSE_STATE_GOT_LENGTH;
 				cnt = 0;
 			}
+		}
 		break;
-		case UAVTALK_PARSE_STATE_GOT_DATA:
-			msg->Crc = c;
-			status = UAVTALK_PARSE_STATE_GOT_CRC;
+	case UAVTALK_PARSE_STATE_GOT_LENGTH:
+		crc = crc_table[crc ^ c];
+		cnt++;
+		switch (cnt) {
+		case 1:
+			msg->ObjID = ((uint32_t)c);
+			break;
+		case 2:
+			msg->ObjID += ((uint32_t)c) << 8;
+			break;
+		case 3:
+			msg->ObjID += ((uint32_t)c) << 16;
+			break;
+		case 4:
+			msg->ObjID += ((uint32_t)c) << 24;
+#if defined VERSION_RELEASE_12_10_1 || defined VERSION_RELEASE_12_10_2 || defined VERSION_RELEASE_13_06_1 || defined VERSION_RELEASE_13_06_2
+			if (msg->Length == HEADER_LEN) { // no data exists
+				status = UAVTALK_PARSE_STATE_GOT_DATA;
+			}
+			else {
+				status = UAVTALK_PARSE_STATE_GOT_INSTID;
+			}
+#else
+			status = UAVTALK_PARSE_STATE_GOT_OBJID;
+#endif
+			cnt = 0;
+			break;
+		}
+		break;
+	case UAVTALK_PARSE_STATE_GOT_OBJID:
+		crc = crc_table[crc ^ c];
+		cnt++;
+		switch (cnt) {
+		case 1:
+			msg->InstID = ((uint32_t)c);
+			break;
+		case 2:
+			msg->InstID += ((uint32_t)c) << 8;
+			if (msg->Length == HEADER_LEN) { // no data exists
+				status = UAVTALK_PARSE_STATE_GOT_DATA;
+			}
+			else {
+				status = UAVTALK_PARSE_STATE_GOT_INSTID;
+			}
+			cnt = 0;
+			break;
+		}
+		break;
+	case UAVTALK_PARSE_STATE_GOT_INSTID:
+		crc = crc_table[crc ^ c];
+		cnt++;
+		msg->Data[cnt - 1] = c;
+		if (cnt >= msg->Length - HEADER_LEN) {
+			status = UAVTALK_PARSE_STATE_GOT_DATA;
+			cnt = 0;
+		}
+		break;
+	case UAVTALK_PARSE_STATE_GOT_DATA:
+		msg->Crc = c;
+		status = UAVTALK_PARSE_STATE_GOT_CRC;
 		break;
 	}
-	
+
 	if (status == UAVTALK_PARSE_STATE_GOT_CRC) {
 		status = UAVTALK_PARSE_STATE_WAIT_SYNC;
 		if (crc == msg->Crc) {
 			return msg->Length;
-		} else {
+		}
+		else {
 			return 0;
 		}
-	} else {
+	}
+	else {
 		return 0;
 	}
 }
@@ -396,135 +401,136 @@ int uavtalk_read(void) {
 	static uavtalk_message_t msg;
 	static uint8_t inited = 0;
 	uint8_t show_prio_info = 0;
-	
+
 	// grabbing data
 	while (!show_prio_info && Serial.available() > 0) {
 		uint8_t c = Serial.read();
-		
+
 		// needed for MinimOSD upload, while no UAVTalk is established
 		if (gcstelemetrystatus == TELEMETRYSTATS_STATE_DISCONNECTED && millis() < 20000 && millis() > 5000) {
 			if (c == '\n' || c == '\r') {
 				crlf_count++;
-			} else {
+			}
+			else {
 				crlf_count = 0;
 			}
 			if (crlf_count == 3) {
 				uploadFont();
 			}
 		}
-		
+
 		// parse data to msg
 		if (uavtalk_parse_char(c, &msg)) {
 			// consume msg
 			switch (msg.ObjID) {
 #ifdef SEND_GCSTELEMETRYSTATS
-				case FLIGHTTELEMETRYSTATS_OBJID:
+			case FLIGHTTELEMETRYSTATS_OBJID:
 #ifdef VERSION_ADDITIONAL_UAVOBJID
-				case FLIGHTTELEMETRYSTATS_OBJID_001:
+			case FLIGHTTELEMETRYSTATS_OBJID_001:
 #endif
-					switch (msg.Data[flighttelemetrystats_obj_status]) {
-						case TELEMETRYSTATS_STATE_DISCONNECTED:
-							gcstelemetrystatus = TELEMETRYSTATS_STATE_HANDSHAKEREQ;
-							uavtalk_send_gcstelemetrystats();
-						break;
-						case TELEMETRYSTATS_STATE_HANDSHAKEACK:
-							gcstelemetrystatus = TELEMETRYSTATS_STATE_CONNECTED;
-							uavtalk_send_gcstelemetrystats();
-						break;
-						case TELEMETRYSTATS_STATE_CONNECTED:
-							gcstelemetrystatus = TELEMETRYSTATS_STATE_CONNECTED;
-							last_flighttelemetry_connect = millis();
-						break;
-					}
-				break;
-#endif /* SEND_GCSTELEMETRYSTATS */
-				case ATTITUDEACTUAL_OBJID:
-				case ATTITUDESTATE_OBJID:
-					last_flighttelemetry_connect = millis();
-#ifndef SEND_GCSTELEMETRYSTATS
-					gcstelemetrystatus = TELEMETRYSTATS_STATE_CONNECTED;
-#endif /* SEND_GCSTELEMETRYSTATS */
-					show_prio_info = 1;
-        				osd_roll		= (int16_t) uavtalk_get_float(&msg, ATTITUDEACTUAL_OBJ_ROLL);
-        				osd_pitch		= (int16_t) uavtalk_get_float(&msg, ATTITUDEACTUAL_OBJ_PITCH);
-        				osd_yaw			= (int16_t) uavtalk_get_float(&msg, ATTITUDEACTUAL_OBJ_YAW);
-                                        // if we don't have a GPS, use Yaw for heading
-                                        if (osd_lat == 0) {
-                                            osd_heading = osd_yaw;
-                                        }
-				break;
-				case FLIGHTSTATUS_OBJID:
-#ifdef VERSION_ADDITIONAL_UAVOBJID
-				case FLIGHTSTATUS_OBJID_001:
-				case FLIGHTSTATUS_OBJID_002:
-				case FLIGHTSTATUS_OBJID_003:
-				case FLIGHTSTATUS_OBJID_004:
-				case FLIGHTSTATUS_OBJID_005:
-				case FLIGHTSTATUS_OBJID_006:
-				case FLIGHTSTATUS_OBJID_007:
-#endif
-        				osd_armed		= uavtalk_get_int8(&msg, FLIGHTSTATUS_OBJ_ARMED);
-        				osd_mode		= uavtalk_get_int8(&msg, FLIGHTSTATUS_OBJ_FLIGHTMODE);
-				break;
-				case MANUALCONTROLCOMMAND_OBJID:
-#ifdef VERSION_ADDITIONAL_UAVOBJID
-				case MANUALCONTROLCOMMAND_OBJID_001:
-				case MANUALCONTROLCOMMAND_OBJID_002:
-#endif
-					osd_throttle		= (int16_t) (100.0 * uavtalk_get_float(&msg, MANUALCONTROLCOMMAND_OBJ_THROTTLE));
-					if (osd_throttle < 0 || osd_throttle > 200) osd_throttle = 0;
-					// Channel mapping:
-					// 0   is Throttle
-                                        // 1-2 are Roll / Pitch 
-                                        // 3   is Yaw
-                                        // 4   is Mode
-                                        // 5   is Collective (Heli - constant 65536 otherwhise)
-                                        // 6-8 are Accessory 0-2
-                                        // In OPOSD:
-                                        // chanx_raw     used for menu navigation (Roll/pitch)
-                                        // osd_chanx_raw used for panel navigation (Accessory)
-                                        chan1_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_1);
-					chan2_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_2);
-					osd_chan5_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_4);
-					osd_chan6_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_6);
-					osd_chan7_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_7);
-					osd_chan8_raw		= uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_8);
-				break;
-
-				case GPSPOSITION_OBJID:
-				case GPSPOSITIONSENSOR_OBJID:
-				case GPSPOSITIONSENSOR_OBJID_001:
-				case GPSPOSITIONSENSOR_OBJID_002:
-				case GPSTIME_OBJID:
-				case GPSVELOCITY_OBJID:
-				case GPSVELOCITYSENSOR_OBJID:
+				switch (msg.Data[flighttelemetrystats_obj_status]) {
+				case TELEMETRYSTATS_STATE_DISCONNECTED:
+					gcstelemetrystatus = TELEMETRYSTATS_STATE_HANDSHAKEREQ;
+					uavtalk_send_gcstelemetrystats();
 					break;
-				case RECEIVERSTATUS_OBJID:
-					osd_receiver_quality	= uavtalk_get_int8(&msg, RECEIVERSTATUS_OBJ_QUALITY);
+				case TELEMETRYSTATS_STATE_HANDSHAKEACK:
+					gcstelemetrystatus = TELEMETRYSTATS_STATE_CONNECTED;
+					uavtalk_send_gcstelemetrystats();
+					break;
+				case TELEMETRYSTATS_STATE_CONNECTED:
+					gcstelemetrystatus = TELEMETRYSTATS_STATE_CONNECTED;
+					last_flighttelemetry_connect = millis();
+					break;
+				}
+				break;
+#endif /* SEND_GCSTELEMETRYSTATS */
+			case ATTITUDEACTUAL_OBJID:
+			case ATTITUDESTATE_OBJID:
+				last_flighttelemetry_connect = millis();
+#ifndef SEND_GCSTELEMETRYSTATS
+				gcstelemetrystatus = TELEMETRYSTATS_STATE_CONNECTED;
+#endif /* SEND_GCSTELEMETRYSTATS */
+				show_prio_info = 1;
+				osd_roll = (int16_t)uavtalk_get_float(&msg, ATTITUDEACTUAL_OBJ_ROLL);
+				osd_pitch = (int16_t)uavtalk_get_float(&msg, ATTITUDEACTUAL_OBJ_PITCH);
+				osd_yaw = (int16_t)uavtalk_get_float(&msg, ATTITUDEACTUAL_OBJ_YAW);
+				// if we don't have a GPS, use Yaw for heading
+				if (osd_lat == 0) {
+					osd_heading = osd_yaw;
+				}
+				break;
+			case FLIGHTSTATUS_OBJID:
+#ifdef VERSION_ADDITIONAL_UAVOBJID
+			case FLIGHTSTATUS_OBJID_001:
+			case FLIGHTSTATUS_OBJID_002:
+			case FLIGHTSTATUS_OBJID_003:
+			case FLIGHTSTATUS_OBJID_004:
+			case FLIGHTSTATUS_OBJID_005:
+			case FLIGHTSTATUS_OBJID_006:
+			case FLIGHTSTATUS_OBJID_007:
+#endif
+				osd_armed = uavtalk_get_int8(&msg, FLIGHTSTATUS_OBJ_ARMED);
+				osd_mode = uavtalk_get_int8(&msg, FLIGHTSTATUS_OBJ_FLIGHTMODE);
+				break;
+			case MANUALCONTROLCOMMAND_OBJID:
+#ifdef VERSION_ADDITIONAL_UAVOBJID
+			case MANUALCONTROLCOMMAND_OBJID_001:
+			case MANUALCONTROLCOMMAND_OBJID_002:
+#endif
+				osd_throttle = (int16_t)(100.0 * uavtalk_get_float(&msg, MANUALCONTROLCOMMAND_OBJ_THROTTLE));
+				if (osd_throttle < 0 || osd_throttle > 200) osd_throttle = 0;
+				// Channel mapping:
+				// 0   is Throttle
+									// 1-2 are Roll / Pitch 
+									// 3   is Yaw
+									// 4   is Mode
+									// 5   is Collective (Heli - constant 65536 otherwhise)
+									// 6-8 are Accessory 0-2
+									// In OPOSD:
+									// chanx_raw     used for menu navigation (Roll/pitch)
+									// osd_chanx_raw used for panel navigation (Accessory)
+				chan1_raw = uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_1);
+				chan2_raw = uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_2);
+				osd_chan5_raw = uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_4);
+				osd_chan6_raw = uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_6);
+				osd_chan7_raw = uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_7);
+				osd_chan8_raw = uavtalk_get_int16(&msg, MANUALCONTROLCOMMAND_OBJ_CHANNEL_8);
 				break;
 
-				case TXPIDSTATUS_OBJID:
-					osd_txpid_cur[0]	= uavtalk_get_float(&msg, TXPIDSTATUS_OBJ_CURPID1);
-					osd_txpid_cur[1]	= uavtalk_get_float(&msg, TXPIDSTATUS_OBJ_CURPID2);
-					osd_txpid_cur[2]	= uavtalk_get_float(&msg, TXPIDSTATUS_OBJ_CURPID3);
+			case GPSPOSITION_OBJID:
+			case GPSPOSITIONSENSOR_OBJID:
+			case GPSPOSITIONSENSOR_OBJID_001:
+			case GPSPOSITIONSENSOR_OBJID_002:
+			case GPSTIME_OBJID:
+			case GPSVELOCITY_OBJID:
+			case GPSVELOCITYSENSOR_OBJID:
+				break;
+			case RECEIVERSTATUS_OBJID:
+				osd_receiver_quality = uavtalk_get_int8(&msg, RECEIVERSTATUS_OBJ_QUALITY);
+				break;
+
+			case TXPIDSTATUS_OBJID:
+				osd_txpid_cur[0] = uavtalk_get_float(&msg, TXPIDSTATUS_OBJ_CURPID1);
+				osd_txpid_cur[1] = uavtalk_get_float(&msg, TXPIDSTATUS_OBJ_CURPID2);
+				osd_txpid_cur[2] = uavtalk_get_float(&msg, TXPIDSTATUS_OBJ_CURPID3);
 				break;
 
 #ifdef OP_DEBUG
-				case SYSTEMALARMS_OBJID:
+			case SYSTEMALARMS_OBJID:
 #ifdef VERSION_ADDITIONAL_UAVOBJID
-				case SYSTEMALARMS_OBJID_001:
-				case SYSTEMALARMS_OBJID_002:
-				case SYSTEMALARMS_OBJID_003:
-				case SYSTEMALARMS_OBJID_004:
-				case SYSTEMALARMS_OBJID_005:
+			case SYSTEMALARMS_OBJID_001:
+			case SYSTEMALARMS_OBJID_002:
+			case SYSTEMALARMS_OBJID_003:
+			case SYSTEMALARMS_OBJID_004:
+			case SYSTEMALARMS_OBJID_005:
 #endif
-					op_alarm  = msg.Data[SYSTEMALARMS_ALARM_CPUOVERLOAD];
-//					op_alarm += msg.Data[SYSTEMALARMS_ALARM_EVENTSYSTEM] * 0x10;
-					op_alarm += msg.Data[SYSTEMALARMS_ALARM_MANUALCONTROL] * 0x10;
-					if (op_alarm > 0x11) show_prio_info = 1;
+				op_alarm = msg.Data[SYSTEMALARMS_ALARM_CPUOVERLOAD];
+				//					op_alarm += msg.Data[SYSTEMALARMS_ALARM_EVENTSYSTEM] * 0x10;
+				op_alarm += msg.Data[SYSTEMALARMS_ALARM_MANUALCONTROL] * 0x10;
+				if (op_alarm > 0x11) show_prio_info = 1;
 				break;
 #endif
-				
+
 				// TODO implement more X_OBJID for more OSD data 
 				// osd_waypoint_seq = 0;           // waypoint sequence
 				// osd_airspeed = 0;               // air speed (only with pitot tube)
@@ -537,13 +543,13 @@ int uavtalk_read(void) {
 
 		delayMicroseconds(190);  // wait at least 1 byte
 	}
-	
+
 	// check connect timeout
 	if (last_flighttelemetry_connect + FLIGHTTELEMETRYSTATS_CONNECT_TIMEOUT < millis()) {
 		gcstelemetrystatus = TELEMETRYSTATS_STATE_DISCONNECTED;
 		show_prio_info = 1;
 	}
-	
+
 #ifdef SEND_GCSTELEMETRYSTATS
 	// periodically send gcstelemetrystats
 	if (last_gcstelemetrystats_send + GCSTELEMETRYSTATS_SEND_PERIOD < millis()) {
@@ -551,7 +557,7 @@ int uavtalk_read(void) {
 	}
 #endif /* SEND_GCSTELEMETRYSTATS */
 
-        return show_prio_info;
+	return show_prio_info;
 }
 
 

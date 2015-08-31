@@ -74,40 +74,40 @@
 
 //If PAL
 #ifdef isPAL
-  #define MAX7456_screen_size 480 //16x30
-  #define MAX7456_screen_rows 0x10
+#define MAX7456_screen_size 480 //16x30
+#define MAX7456_screen_rows 0x10
 #else
-  #define MAX7456_screen_size 390 //13x30
-  #define MAX7456_screen_rows 0x0D
+#define MAX7456_screen_size 390 //13x30
+#define MAX7456_screen_rows 0x0D
 #endif
 
 //------------------ the OSD class -----------------------------------------------
 
-class OSD: public BetterStream
+class OSD : public BetterStream
 {
-  public:
-    OSD(void);
-    void init(void);
-    void clear(void);
-    void plug(void);
-    void setPanel(uint8_t start_col, uint8_t start_row);
-    void openPanel(void);
-    void closePanel(void);
-    void control(uint8_t ctrl);
-    void detectMode(void);
-    void setMode(int mode);
-    void openSingle(uint8_t x, uint8_t y);
-    int getMode(void);
-    int getCenter(void);
-    virtual int     available(void);
-    virtual int     read(void);
-    virtual int     peek(void);
-    virtual void    flush(void);
-    virtual size_t write(uint8_t c);
-    void write_NVM(int font_count, uint8_t *character_bitmap);
-    using BetterStream::write;
-  private:
-    uint8_t start_col, start_row, col, row, video_mode, video_center;
+public:
+	OSD(void);
+	void init(void);
+	void clear(void);
+	void plug(void);
+	void setPanel(uint8_t start_col, uint8_t start_row);
+	void openPanel(void);
+	void closePanel(void);
+	void control(uint8_t ctrl);
+	void detectMode(void);
+	void setMode(int mode);
+	void openSingle(uint8_t x, uint8_t y);
+	int getMode(void);
+	int getCenter(void);
+	virtual int     available(void);
+	virtual int     read(void);
+	virtual int     peek(void);
+	virtual void    flush(void);
+	virtual size_t write(uint8_t c);
+	void write_NVM(int font_count, uint8_t *character_bitmap);
+	using BetterStream::write;
+private:
+	uint8_t start_col, start_row, col, row, video_mode, video_center;
 };
 
 #endif

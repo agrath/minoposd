@@ -3,9 +3,9 @@
 
 // Get the common arduino functions
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "Arduino.h"
+#include "Arduino.h"
 #else
-	#include "wiring.h"
+#include "wiring.h"
 #endif
 
 #define SCK_PIN   13
@@ -15,11 +15,11 @@
 
 class SPI
 {
-  public:
-    SPI(void);
-    void mode(byte);
-    byte transfer(byte);
-    byte transfer(byte, byte);
+public:
+	SPI(void);
+	void mode(byte);
+	byte transfer(byte);
+	byte transfer(byte, byte);
 };
 
 extern SPI Spi;

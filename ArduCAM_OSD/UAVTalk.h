@@ -9,21 +9,21 @@
  * @see        The GNU Public License (GPL) Version 3
  *
  *****************************************************************************/
-/*
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, see <http://www.gnu.org/licenses/> or write to the 
- * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- */
+ /*
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation; either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful, but
+  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  *
+  * You should have received a copy of the GNU General Public License along
+  * with this program; if not, see <http://www.gnu.org/licenses/> or write to the
+  * Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  */
 
 
 #ifndef UAVTALK_H_
@@ -33,17 +33,17 @@
 #include "OSD_Config.h"
 
 
-// TODO enhancement:
-// Generate the following automatically out of the XML files.
-//
-// These object constants are version dependent!
-//
-// Short hints getting them manually:
-// http://wiki.openpilot.org/display/Doc/Windows%3A+Building+and+Packaging
-// git clone git://git.openpilot.org/OpenPilot.git OpenPilot
-// QT Creator > Datei oder Projekt oeffnen... uavobjgenerator
-// generate release and copy exe to <top>\ground\uavobjgenerator
-// uavobjgenerator -flight ..\..\shared\uavobjectdefinition ..\..\
+  // TODO enhancement:
+  // Generate the following automatically out of the XML files.
+  //
+  // These object constants are version dependent!
+  //
+  // Short hints getting them manually:
+  // http://wiki.openpilot.org/display/Doc/Windows%3A+Building+and+Packaging
+  // git clone git://git.openpilot.org/OpenPilot.git OpenPilot
+  // QT Creator > Datei oder Projekt oeffnen... uavobjgenerator
+  // generate release and copy exe to <top>\ground\uavobjgenerator
+  // uavobjgenerator -flight ..\..\shared\uavobjectdefinition ..\..\
 
 #if defined VERSION_RELEASE_12_10_1 || defined VERSION_RELEASE_12_10_2 || defined VERSION_RELEASE_13_06_1 || defined VERSION_RELEASE_13_06_2 || defined VERSION_RELEASE_14_01_1 || defined VERSION_RELEASE_14_06_1 || defined VERSION_RELEASE_14_10_1 || defined VERSION_RELEASE_15_01_1 || defined VERSION_RELEASE_15_02_1 || defined VERSION_RELEASE_15_05
 

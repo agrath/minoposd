@@ -21,10 +21,8 @@
     <None Include="BOOT_Func.ino" />
     <None Include="FlightBatt.ino" />
     <None Include="Font.ino" />
-    <None Include="MAVLink.ino" />
     <None Include="OSD_Config_Func.ino" />
     <None Include="OSD_Panels.ino" />
-    <None Include="PacketRxOk.ino" />
     <None Include="UAVTalk.ino" />
   </ItemGroup>
   <ItemGroup>
@@ -47,9 +45,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OSD_Vars.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PacketRxOk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Spi.h">

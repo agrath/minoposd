@@ -75,11 +75,11 @@ static uint32_t     osd_ncells_A = 0;               // Number of battery cells
 
 
 // Panel BIT registers
-byte panA_REG[npanels] = {0b00000000};
-byte panB_REG[npanels] = {0b00000000};
-byte panC_REG[npanels] = {0b00000000};
-byte panD_REG[npanels] = {0b00000000};
-byte panE_REG[npanels] = {0b00000000};
+byte panA_REG[npanels] = { 0b00000000 };
+byte panB_REG[npanels] = { 0b00000000 };
+byte panC_REG[npanels] = { 0b00000000 };
+byte panD_REG[npanels] = { 0b00000000 };
+byte panE_REG[npanels] = { 0b00000000 };
 
 
 // First 8 panels and their X,Y coordinate holders
