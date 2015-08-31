@@ -66,7 +66,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 #endif
 #include <EEPROM.h>
 #include <SimpleTimer.h>
-#include <GCS_MAVLink.h>
 
 #ifdef membug
 #include <MemoryFree.h>
@@ -111,7 +110,6 @@ along with this program. If not, see <http://www.gnu.org/licenses/>
 FastSerialPort0(Serial);
 OSD osd; //OSD object 
 
-SimpleTimer  mavlinkTimer;
 
 
 /* **********************************************/
@@ -125,8 +123,6 @@ void setup()
 	pinMode(MAX7456_SELECT, OUTPUT); // OSD CS
 
 	Serial.begin(TELEMETRY_SPEED);
-	// setup mavlink port
-	mavlink_comm_0_port = &Serial;
 
 #ifdef membug
 	Serial.println(freeMem());
@@ -197,12 +193,8 @@ void setup()
 	delay(1000);
 #endif
 
-	// Startup MAVLink timers  
-	mavlinkTimer.Set(&OnMavlinkTimer, 100);
-
 	// House cleaning, clear display and enable timers
 	osd.clear();
-	mavlinkTimer.Enable();
 
 } // END of setup();
 
@@ -216,40 +208,16 @@ void setup()
 void loop()
 {
 	// JRChange: OpenPilot UAVTalk:
-#ifdef PROTOCOL_UAVTALK
+
 	if (uavtalk_read()) {
-		OnMavlinkTimer();
-	}
-	else {
-		mavlinkTimer.Run();
-	}
-#else
-	if (enable_mav_request == 1) {//Request rate control
-		osd.clear();
-		osd.setPanel(3, 10);
-		osd.openPanel();
-		osd.printf_P(PSTR("Requesting DataStreams..."));
-		osd.closePanel();
-		for (int n = 0; n < 3; n++) {
-			request_mavlink_rates();//Three times to certify it will be readed
-			delay(50);
-		}
-		enable_mav_request = 0;
-		delay(2000);
-		osd.clear();
-		waitingMAVBeats = 0;
-		lastMAVBeat = millis();//Preventing error from delay sensing
+		OnTick();
 	}
 
-	read_mavlink();
-
-	mavlinkTimer.Run();
-#endif
 }
 
 /* *********************************************** */
 /* ******** functions used in main loop() ******** */
-void OnMavlinkTimer()			// duration is up to approx. 10ms depending on choosen display features
+void OnTick()			// duration is up to approx. 10ms depending on choosen display features
 {
 
 #ifdef GPS_SIMULATION			// simple GPS data simulation
