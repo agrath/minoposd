@@ -38,8 +38,8 @@
 #define REF_VOLTAGE			5			
 #define LOW_VOLTAGE			9.6			// filter start value for 3s LiPo
 
-#define VOLT_DIV_RATIO			15.55			
-#define VOLT_OFFSET				-0.500	
+#define VOLT_DIV_RATIO			3.421
+#define VOLT_OFFSET				0
 
 #define CURR_AMP_PER_VOLT		18.3	
 #define CURR_AMPS_OFFSET		0.0000	
@@ -53,3 +53,8 @@ void flight_batt_read(void);
 
 
 #endif /* FLIGHT_BATT_H_ */
+
+/*
+static double volt_div_ratio = 15.55 * 100 * (1.1/5);
+original (stored in eeprom as *100) then adjusted for changed REF_VOLTAGE
+*/
