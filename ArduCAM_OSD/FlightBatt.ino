@@ -52,7 +52,7 @@ void flight_batt_read(void)
 		voltage = CURRENT_VOLTAGE(analogRead(VOLTAGE_PIN)) * .2 + voltage * .8;		// reads battery voltage pin
 		osd_vbat_A = voltage;
 		if (curr_amp_per_volt > 0) {								// Consider Amp sensor disbled when Amp per Volt ratio is zero
-			int last_amps = CURRENT_AMPS(analogRead(CURRENT_PIN));
+			float last_amps = CURRENT_AMPS(analogRead(CURRENT_PIN));
 			if (current_amps < 0)
 			{
 				current_amps = 0;
