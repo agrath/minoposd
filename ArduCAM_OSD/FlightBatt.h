@@ -38,9 +38,9 @@
 #define REF_VOLTAGE			5			
 #define LOW_VOLTAGE			9.6			// filter start value for 3s LiPo
 
-#define VOLT_DIV_RATIO			3.421
-#define VOLT_OFFSET				0
-
+//if you change these don't forget to alter #define BATT_VER			1 to force an eeprom write as the runtime values only come from eeprom
+#define VOLT_DIV_RATIO            15.55            
+#define VOLT_OFFSET                -0.500    
 #define CURR_AMP_PER_VOLT		18.3	
 #define CURR_AMPS_OFFSET		0.0000	
 
