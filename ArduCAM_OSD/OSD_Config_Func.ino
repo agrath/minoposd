@@ -63,9 +63,9 @@ void readSettings() {
 	rssi_warn_level = EEPROM.read(OSD_RSSI_WARN_ADDR);
 
 	// JRChange: Flight Batt on MinimOSD:
-	volt_div_ratio = EEPROM.read(volt_div_ratio_ADDR) + (EEPROM.read(volt_div_ratio_ADDR + 1) << 8);
+	/*volt_div_ratio = EEPROM.read(volt_div_ratio_ADDR) + (EEPROM.read(volt_div_ratio_ADDR + 1) << 8);
 	curr_amp_per_volt = EEPROM.read(curr_amp_per_volt_ADDR) + (EEPROM.read(curr_amp_per_volt_ADDR + 1) << 8);
-	curr_amp_offset = EEPROM.read(curr_amp_offset_ADDR) + (EEPROM.read(curr_amp_offset_ADDR + 1) << 8);
+	curr_amp_offset = EEPROM.read(curr_amp_offset_ADDR) + (EEPROM.read(curr_amp_offset_ADDR + 1) << 8);*/
 }
 
 void readPanelSettings() {
@@ -244,13 +244,13 @@ void updateSettings(byte panelu, byte panel_x, byte panel_y, byte panel_s) {
 }
 
 
-// JRChange: Flight Batt on MinimOSD:
-void writeBattSettings() {
-	EEPROM.write(BATT_CHK, BATT_VER);
-	EEPROM.write(volt_div_ratio_ADDR,    (int)(VOLT_DIV_RATIO*100.0)&0xff);
-	EEPROM.write(volt_div_ratio_ADDR+1, ((int)(VOLT_DIV_RATIO*100.0)>>8)&0xff);
-	EEPROM.write(curr_amp_per_volt_ADDR,    (int)(CURR_AMP_PER_VOLT*100.0)&0xff);
-	EEPROM.write(curr_amp_per_volt_ADDR+1, ((int)(CURR_AMP_PER_VOLT*100.0)>>8)&0xff);
-	EEPROM.write(curr_amp_offset_ADDR,    (int)(CURR_AMPS_OFFSET*10000.0)&0xff);
-	EEPROM.write(curr_amp_offset_ADDR+1, ((int)(CURR_AMPS_OFFSET*10000.0)>>8)&0xff);
-}
+//// JRChange: Flight Batt on MinimOSD:
+//void writeBattSettings() {
+//	EEPROM.write(BATT_CHK, BATT_VER);
+//	EEPROM.write(volt_div_ratio_ADDR,    (int)(VOLT_DIV_RATIO*100.0)&0xff);
+//	EEPROM.write(volt_div_ratio_ADDR+1, ((int)(VOLT_DIV_RATIO*100.0)>>8)&0xff);
+//	EEPROM.write(curr_amp_per_volt_ADDR,    (int)(CURR_AMP_PER_VOLT*100.0)&0xff);
+//	EEPROM.write(curr_amp_per_volt_ADDR+1, ((int)(CURR_AMP_PER_VOLT*100.0)>>8)&0xff);
+//	EEPROM.write(curr_amp_offset_ADDR,    (int)(CURR_AMPS_OFFSET*10000.0)&0xff);
+//	EEPROM.write(curr_amp_offset_ADDR+1, ((int)(CURR_AMPS_OFFSET*10000.0)>>8)&0xff);
+//}

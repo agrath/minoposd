@@ -30,12 +30,12 @@
 
 #include "FlightBatt.h"
 
-
-void flight_batt_init(void)
-{
-	analogReference(DEFAULT);
-}
-
+//
+//void flight_batt_init(void)
+//{
+//	analogReference(DEFAULT);
+//}
+//
 
 void flight_batt_read(void)
 {
@@ -51,7 +51,7 @@ void flight_batt_read(void)
 		int last_voltage_read = analogRead(VOLTAGE_PIN);
 		voltage = CURRENT_VOLTAGE(last_voltage_read) * .2 + voltage * .8;		// reads battery voltage pin
 		osd_vbat_A = voltage;
-		if (curr_amp_per_volt > 0) {								// Consider Amp sensor disbled when Amp per Volt ratio is zero
+		if (CURR_MV_PER_AMP > 0) {								// Consider Amp sensor disbled when Amp per Volt ratio is zero
 			int last_current_read = analogRead(CURRENT_PIN);
 			float last_amps = CURRENT_AMPS(last_current_read);
 			if (current_amps < 0)
@@ -64,8 +64,8 @@ void flight_batt_read(void)
 			
 			write_float(2, 5, last_amps); //-48
 			write_int(2, 6, last_current_read); //12
-			write_int(2, 7, curr_amp_offset); //5000
-			write_int(2, 8, curr_amp_per_volt); //10000
+			write_int(2, 7, CURR_AMPS_OFFSET); //5000
+			write_float(2, 8, CURR_MV_PER_AMP); //10000
 			write_float(2, 9, current_amps); //0
 
 			if (last_amps > 0)

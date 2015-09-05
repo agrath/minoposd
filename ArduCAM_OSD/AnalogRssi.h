@@ -37,7 +37,7 @@
 
 #define REF_VOLTAGE			1.1			// INTERNAL: a built-in reference, equal to 1.1 volts on the ATmega168 or ATmega328
 
-void analog_rssi_init(void);
+//void analog_rssi_init(void);
 void analog_rssi_read(void);
 
 

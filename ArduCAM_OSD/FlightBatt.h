@@ -34,21 +34,21 @@
 
 #define VOLTAGE_PIN			0
 #define CURRENT_PIN			1
+//VREF (analog configured max input) is set to 5v
+#define VOLTAGE_REF_VOLTAGE			1.1			//The maxzimum read we expect for the configured sensor
+#define CURRENT_REF_VOLTAGE			3.3			//The maxzimum read we expect for the configured sensor
+#define LOW_VOLTAGE			9.6			
 
-#define REF_VOLTAGE			5			
-#define LOW_VOLTAGE			9.6			// filter start value for 3s LiPo
-
-//if you change these don't forget to alter #define BATT_VER 1 to force an eeprom write as the runtime values only come from eeprom
 #define VOLT_DIV_RATIO            15.55            
-#define VOLT_OFFSET               -100
-#define CURR_AMP_PER_VOLT		10.98 //attopilot 180 is 18.3mv/A at 3.3 vref but we use 5 vref so 18.3 * 3/5	
-#define CURR_AMPS_OFFSET		0.0000	
+#define VOLT_OFFSET               0
+#define CURR_MV_PER_AMP		18.3
+#define CURR_AMPS_OFFSET		0
 
-#define CURRENT_VOLTAGE(x)		(((x)*REF_VOLTAGE/1024.0)-(VOLT_OFFSET/10000.0))*(volt_div_ratio/100.0)
-#define CURRENT_AMPS(x)			(((x)*REF_VOLTAGE/1024.0)-(curr_amp_offset/10000.0))*(curr_amp_per_volt/100.0)
+#define CURRENT_VOLTAGE(x)		(((x)*VOLTAGE_REF_VOLTAGE/1024.0)-(VOLT_OFFSET/10000))*(VOLT_DIV_RATIO)
+#define CURRENT_AMPS(x)			((double)(((x)*CURRENT_REF_VOLTAGE/1024.0))-(CURR_AMPS_OFFSET/10000.0)) / (CURR_MV_PER_AMP/1000)
 
 
-void flight_batt_init(void);
+//void flight_batt_init(void);
 void flight_batt_read(void);
 
 

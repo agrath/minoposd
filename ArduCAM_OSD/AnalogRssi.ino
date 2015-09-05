@@ -31,12 +31,6 @@
 #include "AnalogRssi.h"
 
 
-void analog_rssi_init(void)
-{
-	analogReference(INTERNAL);			// INTERNAL: a built-in reference, equal to 1.1 volts on the ATmega168 or ATmega328
-}
-
-
 void analog_rssi_read(void)
 {
 	if (rssiraw_on) {

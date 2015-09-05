@@ -64,9 +64,9 @@ static uint8_t      osd_receiver_quality = 0;       // Receiver Link Quality
 static float	    osd_txpid_cur[3] = {};	    // Current TXPID setting
 
 // Flight Batt on MinimOSD:
-static int          volt_div_ratio = 0;             // Volt * 100
-static int          curr_amp_per_volt = 0;          // Ampere * 100
-static int          curr_amp_offset = 0;            // Ampere * 10000
+//static int          volt_div_ratio = 0;             // Volt * 100
+//static int          curr_amp_per_volt = 0;          // Ampere * 100
+//static int          curr_amp_offset = 0;            // Ampere * 10000
 // Flight Batt on MinimOSD and Revo
 static uint16_t     osd_total_A = 0;                // Battery total current [mAh]
 // Flight Batt on Revo

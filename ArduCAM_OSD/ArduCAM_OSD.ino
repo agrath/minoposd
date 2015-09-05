@@ -150,10 +150,10 @@ void setup()
 #endif
 
 	// JRChange: Flight Batt on MinimOSD:
-		// Check EEPROM to see if we have initialized the battery values already
-	if (readEEPROM(BATT_CHK) != BATT_VER) {
-		writeBattSettings();
-	}
+	// Check EEPROM to see if we have initialized the battery values already
+	//if (readEEPROM(BATT_CHK) != BATT_VER) {
+	//writeBattSettings();
+	//}
 
 	// Get correct panel settings from EEPROM
 	readSettings();
@@ -163,18 +163,21 @@ void setup()
 	loadBar();
 
 	// JRChange: Flight Batt on MinimOSD:
-#ifdef FLIGHT_BATT_ON_MINIMOSD
-	flight_batt_init();
-#endif
+//#ifdef FLIGHT_BATT_ON_MINIMOSD
+//	flight_batt_init();
+//#endif
+
+	analogReference(DEFAULT); //5V vref
 
 	// JRChange: PacketRxOk on MinimOSD:
 #ifdef PACKETRXOK_ON_MINIMOSD
 	PacketRxOk_init();
 #endif
 
-#ifdef ANALOG_RSSI_ON_MINIMOSD
-	analog_rssi_init();
-#endif
+//analogReference gets called above to set the global analog vref
+//#ifdef ANALOG_RSSI_ON_MINIMOSD
+//	analog_rssi_init();
+//#endif
 
 #ifdef USE_WITH_MINRXOSD
 	delay(1000);
