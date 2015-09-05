@@ -174,10 +174,10 @@ void setup()
 	PacketRxOk_init();
 #endif
 
-//analogReference gets called above to set the global analog vref
-//#ifdef ANALOG_RSSI_ON_MINIMOSD
-//	analog_rssi_init();
-//#endif
+	//analogReference gets called above to set the global analog vref
+	//#ifdef ANALOG_RSSI_ON_MINIMOSD
+	//	analog_rssi_init();
+	//#endif
 
 #ifdef USE_WITH_MINRXOSD
 	delay(1000);

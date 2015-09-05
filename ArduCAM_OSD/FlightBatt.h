@@ -34,14 +34,16 @@
 
 #define VOLTAGE_PIN			0
 #define CURRENT_PIN			1
-//VREF (analog configured max input) is set to 5v
-#define VOLTAGE_REF_VOLTAGE			1.1			//The maxzimum read we expect for the configured sensor
-#define CURRENT_REF_VOLTAGE			3.3			//The maxzimum read we expect for the configured sensor
+
+#define VOLTAGE_REF_VOLTAGE			1.1			//The maximum read we expect for the configured sensor
+#define CURRENT_REF_VOLTAGE			3.3			//The maximum read we expect for the configured sensor
+//VREF (analog configured max input) is set to 5v (ArduCAM_OSD.ino call to analogReference)
+#define ANALOG_VREF					5;
 #define LOW_VOLTAGE			9.6			
 
-#define VOLT_DIV_RATIO            15.55            
+#define VOLT_DIV_RATIO            70.45            
 #define VOLT_OFFSET               0
-#define CURR_MV_PER_AMP		18.3
+#define CURR_MV_PER_AMP		18.3 * (CURRENT_REF_VOLTAGE / ANALOG_VREF)	//DATASHEET VALUE * SENSOR_MAX/VREF
 #define CURR_AMPS_OFFSET		0
 
 #define CURRENT_VOLTAGE(x)		(((x)*VOLTAGE_REF_VOLTAGE/1024.0)-(VOLT_OFFSET/10000))*(VOLT_DIV_RATIO)
