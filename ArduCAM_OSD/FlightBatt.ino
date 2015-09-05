@@ -59,8 +59,15 @@ void flight_batt_read(void)
 				current_amps = 0;
 			}
 			
-			write_int(2, 6, last_current_read);
-			write_float(2, 5, last_amps);
+			
+			
+			
+			write_float(2, 5, last_amps); //-48
+			write_int(2, 6, last_current_read); //12
+			write_int(2, 7, curr_amp_offset); //5000
+			write_int(2, 8, curr_amp_per_volt); //10000
+			write_float(2, 9, current_amps); //0
+
 			if (last_amps > 0)
 			{
 				current_amps = last_amps * .2 + current_amps * .8; 	// reads battery sensor current pin
