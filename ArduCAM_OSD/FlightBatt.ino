@@ -33,7 +33,7 @@
 
 void flight_batt_init(void)
 {
-	analogReference(INTERNAL);
+	analogReference(DEFAULT);
 }
 
 
