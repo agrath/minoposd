@@ -283,7 +283,7 @@
 #define CHK2 1006
 
 // JRChange: Flight Batt on MinimOSD:
-#define BATT_VER			1
+#define BATT_VER			2
 #define BATT_CHK			1011
 #define volt_div_ratio_ADDR		1012
 #define curr_amp_per_volt_ADDR		1014

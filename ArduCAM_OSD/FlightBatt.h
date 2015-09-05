@@ -38,10 +38,10 @@
 #define REF_VOLTAGE			5			
 #define LOW_VOLTAGE			9.6			// filter start value for 3s LiPo
 
-//if you change these don't forget to alter #define BATT_VER			1 to force an eeprom write as the runtime values only come from eeprom
+//if you change these don't forget to alter #define BATT_VER 1 to force an eeprom write as the runtime values only come from eeprom
 #define VOLT_DIV_RATIO            15.55            
-#define VOLT_OFFSET                -0.500    
-#define CURR_AMP_PER_VOLT		18.3	
+#define VOLT_OFFSET               -100
+#define CURR_AMP_PER_VOLT		10.98 //attopilot 180 is 18.3mv/A at 3.3 vref but we use 5 vref so 18.3 * 3/5	
 #define CURR_AMPS_OFFSET		0.0000	
 
 #define CURRENT_VOLTAGE(x)		(((x)*REF_VOLTAGE/1024.0)-(VOLT_OFFSET/10000.0))*(volt_div_ratio/100.0)
