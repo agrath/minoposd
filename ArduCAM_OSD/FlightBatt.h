@@ -53,8 +53,3 @@ void flight_batt_read(void);
 
 
 #endif /* FLIGHT_BATT_H_ */
-
-/*
-static double volt_div_ratio = 15.55 * 100 * (1.1/5);
-original (stored in eeprom as *100) then adjusted for changed REF_VOLTAGE
-*/

@@ -24,6 +24,7 @@
     <None Include="OSD_Config_Func.ino" />
     <None Include="OSD_Panels.ino" />
     <None Include="UAVTalk.ino" />
+    <None Include="PacketRxOk.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Visual Micro\.ArduCAM_OSD.vsarduino.h">
@@ -51,6 +52,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UAVTalk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketRxOk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
