@@ -35,7 +35,7 @@
 								// Any 'free' analog input will do -- A0-5 are available, 
 								// which are pins 23-28 on the ATmega328p
 
-#define REF_VOLTAGE			1.1			// INTERNAL: a built-in reference, equal to 1.1 volts on the ATmega168 or ATmega328
+//#define REF_VOLTAGE			1.1			// INTERNAL: a built-in reference, equal to 1.1 volts on the ATmega168 or ATmega328
 
 //void analog_rssi_init(void);
 void analog_rssi_read(void);

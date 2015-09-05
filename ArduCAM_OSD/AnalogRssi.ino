@@ -33,17 +33,8 @@
 
 void analog_rssi_read(void)
 {
-	if (rssiraw_on) {
-		osd_rssi = analogRead(RSSI_PIN) / 4;				// Just raw value, 0-255. We use this range to better align
-										// with the original code.
-	}
-	else {
-#ifdef JR_SPECIALS
-		// SEARCH GLITCH
-		osd_rssi = analogRead(RSSI_PIN) / 4;			// 1:1 input
-#else
-		osd_rssi = analogRead(RSSI_PIN) * .2 / 4 + osd_rssi * .8;	// Smooth input
-#endif
-		osd_rssi = constrain(osd_rssi, rssipersent, rssical);		// Ensure we stay in range
-	}
+	//voltage divider scales to 1.1
+	//analog reference is 5
+	int read = analogRead(RSSI_PIN) * (5/1.1);
+	osd_rssi = read * .2 + osd_rssi * .8;	// Smooth input
 }

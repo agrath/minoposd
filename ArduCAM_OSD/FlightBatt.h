@@ -42,7 +42,7 @@
 #define LOW_VOLTAGE			9.6			
 
 #define VOLT_DIV_RATIO            70.45            
-#define VOLT_OFFSET               -100
+#define VOLT_OFFSET               -200
 #define CURR_MV_PER_AMP		18.3 * (CURRENT_REF_VOLTAGE / ANALOG_VREF)	//DATASHEET VALUE * SENSOR_MAX/VREF
 #define CURR_AMPS_OFFSET		-75
 
