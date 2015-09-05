@@ -52,14 +52,14 @@ void flight_batt_read(void)
 		voltage = CURRENT_VOLTAGE(analogRead(VOLTAGE_PIN)) * .2 + voltage * .8;		// reads battery voltage pin
 		osd_vbat_A = voltage;
 		if (curr_amp_per_volt > 0) {								// Consider Amp sensor disbled when Amp per Volt ratio is zero
-			int last_amps = analogRead(CURRENT_PIN);
+			int last_amps = CURRENT_AMPS(analogRead(CURRENT_PIN));
 			if (current_amps < 0)
 			{
 				current_amps = 0;
 			}
 			if (last_amps > 0)
 			{
-				current_amps = CURRENT_AMPS(last_amps) * .2 + current_amps * .8; 	// reads battery sensor current pin
+				current_amps = last_amps * .2 + current_amps * .8; 	// reads battery sensor current pin
 				current_total += current_amps * (float)delta_ms * 0.0002778;				// .0002778 is 1/3600 (conversion to hours)
 				osd_curr_A = current_amps * 100;
 				osd_total_A = current_total;
