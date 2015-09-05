@@ -149,19 +149,6 @@ void setup()
 	InitializeOSD();
 #endif
 
-	// JRChange:
-#if 0
-	// Check EEPROM to see if we have initialized it already or not
-	// also checks if we have new version that needs EEPROM reset
-	if (readEEPROM(CHK1) + readEEPROM(CHK2) != VER) {
-		osd.setPanel(6, 9);
-		osd.openPanel();
-		osd.printf_P(PSTR("Missing/Old Config"));
-		osd.closePanel();
-		InitializeOSD();
-	}
-#endif
-
 	// JRChange: Flight Batt on MinimOSD:
 		// Check EEPROM to see if we have initialized the battery values already
 	if (readEEPROM(BATT_CHK) != BATT_VER) {
