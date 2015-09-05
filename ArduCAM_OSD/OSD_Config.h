@@ -9,6 +9,10 @@
 // Only devs should increment this
 #define VER 75
 
+//agrath: this will start the timer when current goes above
+//#define TIME_RESET_AMPERE	2	// [A]	current above which the on time is set to 00:00
+//#define START_TIMER_ON_CURRENT 
+
 // JRChange: use with minRXOSD:
 //#define USE_WITH_MINRXOSD
 
