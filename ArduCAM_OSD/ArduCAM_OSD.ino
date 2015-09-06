@@ -169,11 +169,6 @@ void setup()
 
 	analogReference(DEFAULT); //5V vref
 
-	// JRChange: PacketRxOk on MinimOSD:
-#ifdef PACKETRXOK_ON_MINIMOSD
-	PacketRxOk_init();
-#endif
-
 	//analogReference gets called above to set the global analog vref
 	//#ifdef ANALOG_RSSI_ON_MINIMOSD
 	//	analog_rssi_init();
@@ -217,9 +212,6 @@ void OnTick()			// duration is up to approx. 10ms depending on choosen display f
 
 #ifdef ANALOG_RSSI_ON_MINIMOSD
 	analog_rssi_read();
-	rssi = (int16_t)osd_rssi;
-	if (!rssiraw_on) rssi = (int16_t)((float)(rssi - rssipersent) / (float)(rssical - rssipersent)*100.0f);
-	if (rssi < -99) rssi = -99;
 #endif
 
 	writePanels();			// writing enabled panels (check OSD_Panels Tab)

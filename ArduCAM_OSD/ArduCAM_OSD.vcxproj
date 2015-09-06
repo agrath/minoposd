@@ -151,9 +151,6 @@
     <None Include="OSD_Panels.ino">
       <FileType>CppCode</FileType>
     </None>
-    <None Include="PacketRxOk.ino">
-      <FileType>CppCode</FileType>
-    </None>
     <None Include="UAVTalk.ino">
       <FileType>CppCode</FileType>
     </None>
@@ -175,9 +172,6 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="OSD_Vars.h">
-      <FileType>CppCode</FileType>
-    </ClInclude>
-    <ClInclude Include="PacketRxOk.h">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="Spi.h">

@@ -131,7 +131,7 @@ byte panTemp_XY[2][npanels];
 
 //*************************************************************************************************************
 // rssi variables
-static uint8_t      rssipersent = 0;
+static uint8_t      rssipercent = 0;
 static uint8_t      rssical = 0;
 static uint8_t      osd_rssi = 0;		// value from PacketRxOk or analogRSSI
 static int16_t      rssi = -99;			// scaled value 0-100%

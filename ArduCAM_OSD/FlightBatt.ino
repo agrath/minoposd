@@ -59,14 +59,6 @@ void flight_batt_read(void)
 				current_amps = 0;
 			}
 			
-			write_int(2, 6, last_voltage_read); //12
-
-			//write_float(2, 5, last_amps); //-48
-			//write_int(2, 6, last_current_read); //12
-			//write_int(2, 7, CURR_AMPS_OFFSET); //5000
-			//write_float(2, 8, CURR_MV_PER_AMP); //10000
-			//write_float(2, 9, current_amps); //0
-
 			if (last_amps > 0)
 			{
 				current_amps = last_amps * .2 + current_amps * .8; 	// reads battery sensor current pin
@@ -76,17 +68,4 @@ void flight_batt_read(void)
 			}
 		}
 	}
-}
-//
-//void write_float(int first_col, int first_line, float value) {
-//	osd.setPanel(first_col, first_line);
-//	osd.openPanel();
-//	osd.printf("%5.2f", (value * 100) * .01);
-//	osd.closePanel();
-//}
-void write_int(int first_col, int first_line, int value) {
-	osd.setPanel(first_col, first_line);
-	osd.openPanel();
-	osd.printf("%4i", value);
-	osd.closePanel();
 }

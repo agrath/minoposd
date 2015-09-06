@@ -33,8 +33,9 @@
 
 void analog_rssi_read(void)
 {
-	//voltage divider scales to 1.1
-	//analog reference is 5
-	int read = analogRead(RSSI_PIN) * (5/1.1);
+	int read = analogRead(RSSI_PIN);
 	osd_rssi = read * .2 + osd_rssi * .8;	// Smooth input
+	rssi = (int16_t)osd_rssi;
+	rssi = (int16_t)((float)(rssi - rssipercent) / (float)(rssical - rssipercent)*100.0f);
+	if (rssi < -99) rssi = -99;
 }

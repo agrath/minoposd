@@ -23,11 +23,6 @@ TODO:
 #include "FlightBatt.h"
 #endif
 
-#ifdef PACKETRXOK_ON_MINIMOSD
-#include "PacketRxOk.h"
-#endif
-
-
 #define PWM_LO			1200	// [us]	PWM low value
 #define PWM_HI			1800	// [us]	PWM high value
 #define PWM_OFFSET		100	// [us]	PWM offset for detecting stick movement
